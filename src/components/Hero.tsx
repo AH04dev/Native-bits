@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Code2, Sparkles, Play } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 import { useRef } from 'react';
 import Link from 'next/link';
 

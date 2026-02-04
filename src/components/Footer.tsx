@@ -42,14 +42,14 @@ export default function Footer() {
                                     width: '44px',
                                     height: '44px',
                                     borderRadius: '14px',
-                                    background: 'linear-gradient(135deg, #FAFAFA, #A1A1AA)',
+                                    overflow: 'hidden',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                 }}
                                 whileHover={{ rotate: 5 }}
                             >
-                                <Sparkles style={{ width: '22px', height: '22px', color: '#09090B' }} />
+                                <img src="/logo.png" alt="MobileUI" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             </motion.div>
                             <span style={{
                                 fontSize: '22px',

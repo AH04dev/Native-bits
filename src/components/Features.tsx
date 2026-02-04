@@ -136,7 +136,7 @@ export default function Features() {
                         gap: '16px'
                     }}
                 >
-                    {features.map((feature, index) => (
+                    {features.map((feature) => (
                         <motion.div
                             key={feature.title}
                             variants={item}

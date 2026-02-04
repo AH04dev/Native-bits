@@ -65,14 +65,14 @@ export default function Navbar() {
                                 width: '42px',
                                 height: '42px',
                                 borderRadius: '12px',
-                                background: 'linear-gradient(135deg, #FAFAFA, #A1A1AA)',
+                                overflow: 'hidden',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}
                             whileHover={{ rotate: 5 }}
                         >
-                            <Sparkles style={{ width: '22px', height: '22px', color: '#09090B' }} />
+                            <img src="/logo.png" alt="MobileUI" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </motion.div>
                         <span style={{
                             fontSize: '22px',

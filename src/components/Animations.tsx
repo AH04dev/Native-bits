@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, TargetAndTransition, VariantLabels } from 'framer-motion';
 import { Copy, Check, ChevronRight, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
@@ -9,7 +9,7 @@ type Platform = 'react-native' | 'flutter';
 interface Animation {
     name: string;
     color: string;
-    animation: any;
+    animation: TargetAndTransition | VariantLabels | boolean;
     code: {
         'react-native': string;
         flutter: string;

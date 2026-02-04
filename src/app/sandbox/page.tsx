@@ -180,6 +180,7 @@ export default function SandboxPage() {
         '> Waiting for changes...'
     ]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         setCode(starterTemplates[platform][template as keyof typeof starterTemplates['react-native']]);
     }, [platform, template]);
