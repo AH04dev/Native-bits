@@ -9,7 +9,7 @@ type Platform = 'react-native' | 'flutter';
 interface Animation {
     name: string;
     color: string;
-    animation: object;
+    animation: any;
     code: {
         'react-native': string;
         flutter: string;
