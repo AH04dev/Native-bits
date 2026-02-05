@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Github, Star, ArrowUpRight, Zap } from 'lucide-react';
+import { Menu, X, Github, Star, ArrowUpRight, Zap, Heart } from 'lucide-react';
 
 const navLinks = [
     { name: 'Components', href: '/components' },
     { name: 'Animations', href: '/animations' },
     { name: 'Sandbox', href: '/sandbox' },
-    { name: 'Pricing', href: '#pricing' },
 ];
 
 export default function Navbar() {
@@ -114,7 +113,7 @@ export default function Navbar() {
                     ))}
                 </div>
 
-                {/* Right Side: GitHub + CTA */}
+                {/* Right Side: GitHub + Sponsor + CTA */}
                 <div style={{ alignItems: 'center', gap: '12px' }} className="hidden md:flex">
                     <motion.a
                         href="#"
@@ -131,6 +130,32 @@ export default function Navbar() {
                     >
                         <Github size={20} />
                     </motion.a>
+
+                    <motion.button
+                        style={{
+                            background: 'rgba(236, 72, 153, 0.1)',
+                            color: '#F472B6',
+                            padding: '10px 20px',
+                            borderRadius: '100px',
+                            fontSize: '13px',
+                            fontWeight: 600,
+                            border: '1px solid rgba(236, 72, 153, 0.2)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px'
+                        }}
+                        whileHover={{
+                            scale: 1.05,
+                            background: 'rgba(236, 72, 153, 0.2)',
+                            boxShadow: '0 0 20px rgba(236, 72, 153, 0.2)'
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <Heart size={14} fill="currentColor" />
+                        Sponsor
+                    </motion.button>
 
                     <motion.button
                         style={{

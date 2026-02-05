@@ -4,7 +4,6 @@ import {
   Features,
   ComponentShowcase,
   Animations,
-  Pricing,
   CTA,
   Footer,
 } from '@/components';
@@ -17,7 +16,7 @@ export default function Home() {
       <ComponentShowcase />
       <Features />
       <Animations />
-      <Pricing />
+
       <CTA />
       <Footer />
     </main>

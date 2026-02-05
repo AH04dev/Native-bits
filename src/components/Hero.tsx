@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Play } from 'lucide-react';
 import { useRef } from 'react';
 import Link from 'next/link';
+import Orb from './Orb';
 
 export default function Hero() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -12,7 +13,6 @@ export default function Hero() {
         offset: ["start start", "end start"]
     });
 
-    const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
     const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
     const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
@@ -33,24 +33,28 @@ export default function Hero() {
             <div className="dot-grid" style={{
                 position: 'absolute',
                 inset: 0,
-                opacity: 0.5
+                opacity: 0.5,
+                pointerEvents: 'none'
             }} />
 
-            {/* Glow Orb */}
-            <motion.div
-                style={{
-                    position: 'absolute',
-                    top: '30%',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '600px',
-                    height: '600px',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, rgba(120, 119, 198, 0.15) 0%, transparent 60%)',
-                    filter: 'blur(60px)',
-                    y
-                }}
-            />
+            {/* Orb Background */}
+            <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '1200px',
+                height: '1200px',
+                zIndex: 0,
+            }}>
+                <Orb
+                    hoverIntensity={2}
+                    rotateOnHover
+                    hue={0}
+                    forceHoverState={false}
+                    backgroundColor="#000000"
+                />
+            </div>
 
             <motion.div
                 style={{
@@ -61,7 +65,8 @@ export default function Hero() {
                     zIndex: 10,
                     textAlign: 'center',
                     opacity,
-                    scale
+                    scale,
+                    pointerEvents: 'none'
                 }}
             >
                 {/* Badge */}
@@ -80,6 +85,7 @@ export default function Hero() {
                             background: 'rgba(255, 255, 255, 0.03)',
                             border: '1px solid rgba(255, 255, 255, 0.08)',
                             marginBottom: '32px',
+                            pointerEvents: 'auto'
                         }}
                         whileHover={{
                             borderColor: 'rgba(255, 255, 255, 0.15)',
@@ -147,7 +153,8 @@ export default function Hero() {
                         flexWrap: 'wrap',
                         justifyContent: 'center',
                         gap: '16px',
-                        marginBottom: '80px'
+                        marginBottom: '80px',
+                        pointerEvents: 'auto'
                     }}
                 >
                     <motion.button
@@ -202,59 +209,7 @@ export default function Hero() {
                     </Link>
                 </motion.div>
 
-                {/* Preview Cards */}
-                <motion.div
-                    initial={{ opacity: 0, y: 60 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(3, 1fr)',
-                        gap: '16px',
-                        maxWidth: '700px',
-                        margin: '0 auto'
-                    }}
-                >
-                    {[
-                        { label: 'Buttons', icon: '◆' },
-                        { label: 'Cards', icon: '▣' },
-                        { label: 'Animations', icon: '◎' }
-                    ].map((item, i) => (
-                        <motion.div
-                            key={item.label}
-                            animate={{ y: [0, -8, 0] }}
-                            transition={{
-                                duration: 3 + i * 0.3,
-                                repeat: Infinity,
-                                ease: 'easeInOut',
-                                delay: i * 0.5
-                            }}
-                            whileHover={{
-                                scale: 1.02,
-                                borderColor: 'rgba(255, 255, 255, 0.15)'
-                            }}
-                            style={{
-                                padding: '28px 20px',
-                                borderRadius: '20px',
-                                background: 'linear-gradient(145deg, rgba(24, 24, 27, 0.8), rgba(15, 15, 18, 0.9))',
-                                border: '1px solid rgba(255, 255, 255, 0.06)',
-                                backdropFilter: 'blur(20px)',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            <div style={{
-                                fontSize: '32px',
-                                marginBottom: '12px',
-                                opacity: 0.6
-                            }}>{item.icon}</div>
-                            <span style={{
-                                fontSize: '14px',
-                                color: '#A1A1AA',
-                                fontWeight: 500
-                            }}>{item.label}</span>
-                        </motion.div>
-                    ))}
-                </motion.div>
+
             </motion.div>
 
             {/* Bottom Gradient Line */}
