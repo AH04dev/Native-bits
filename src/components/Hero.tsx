@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, Layers, Sparkles } from 'lucide-react';
 import { useRef } from 'react';
 import Link from 'next/link';
 import Orb from './Orb';
@@ -37,15 +37,16 @@ export default function Hero() {
                 pointerEvents: 'none'
             }} />
 
-            {/* Orb Background */}
+            {/* Orb Background - Responsive */}
             <div style={{
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                width: '1200px',
-                height: '1200px',
+                width: 'min(1200px, 150vw)',
+                height: 'min(1200px, 150vw)',
                 zIndex: 0,
+                maxWidth: '100%',
             }}>
                 <Orb
                     hoverIntensity={2}
@@ -66,7 +67,8 @@ export default function Hero() {
                     textAlign: 'center',
                     opacity,
                     scale,
-                    pointerEvents: 'none'
+                    pointerEvents: 'none',
+                    width: '100%',
                 }}
             >
                 {/* Badge */}
@@ -114,7 +116,7 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                     transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                     style={{
-                        fontSize: 'clamp(42px, 9vw, 82px)',
+                        fontSize: 'clamp(36px, 9vw, 82px)',
                         fontWeight: 700,
                         lineHeight: 1.05,
                         marginBottom: '28px',
@@ -132,11 +134,12 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                     style={{
-                        fontSize: '18px',
+                        fontSize: 'clamp(14px, 4vw, 18px)',
                         color: '#71717A',
                         maxWidth: '560px',
                         margin: '0 auto 48px',
-                        lineHeight: 1.8
+                        lineHeight: 1.8,
+                        padding: '0 16px',
                     }}
                 >
                     An open-source collection of premium animated components
@@ -153,8 +156,9 @@ export default function Hero() {
                         flexWrap: 'wrap',
                         justifyContent: 'center',
                         gap: '16px',
-                        marginBottom: '80px',
-                        pointerEvents: 'auto'
+                        marginBottom: '48px',
+                        pointerEvents: 'auto',
+                        padding: '0 16px',
                     }}
                 >
                     <motion.button
@@ -209,6 +213,108 @@ export default function Hero() {
                     </Link>
                 </motion.div>
 
+                {/* UI & Animation Cards */}
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        gap: '16px',
+                        pointerEvents: 'auto',
+                        padding: '0 16px',
+                    }}
+                >
+                    {/* UI Components Card */}
+                    <motion.a
+                        href="#components"
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '16px',
+                            padding: '20px 28px',
+                            background: 'linear-gradient(145deg, rgba(24, 24, 27, 0.9), rgba(15, 15, 18, 0.95))',
+                            borderRadius: '16px',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                            minWidth: '200px',
+                        }}
+                        whileHover={{
+                            scale: 1.03,
+                            borderColor: 'rgba(102, 126, 234, 0.4)',
+                            boxShadow: '0 8px 32px rgba(102, 126, 234, 0.15)'
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                    >
+                        <div style={{
+                            width: '44px',
+                            height: '44px',
+                            borderRadius: '12px',
+                            background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                            <Layers size={22} color="#FAFAFA" />
+                        </div>
+                        <div style={{ textAlign: 'left' }}>
+                            <div style={{ fontSize: '15px', fontWeight: 600, color: '#FAFAFA' }}>
+                                UI Components
+                            </div>
+                            <div style={{ fontSize: '13px', color: '#71717A' }}>
+                                Ready-to-use elements
+                            </div>
+                        </div>
+                    </motion.a>
+
+                    {/* Animations Card */}
+                    <motion.a
+                        href="#animations"
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '16px',
+                            padding: '20px 28px',
+                            background: 'linear-gradient(145deg, rgba(24, 24, 27, 0.9), rgba(15, 15, 18, 0.95))',
+                            borderRadius: '16px',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                            minWidth: '200px',
+                        }}
+                        whileHover={{
+                            scale: 1.03,
+                            borderColor: 'rgba(245, 87, 108, 0.4)',
+                            boxShadow: '0 8px 32px rgba(245, 87, 108, 0.15)'
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                    >
+                        <div style={{
+                            width: '44px',
+                            height: '44px',
+                            borderRadius: '12px',
+                            background: 'linear-gradient(135deg, #f5576c, #f093fb)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                            <Sparkles size={22} color="#FAFAFA" />
+                        </div>
+                        <div style={{ textAlign: 'left' }}>
+                            <div style={{ fontSize: '15px', fontWeight: 600, color: '#FAFAFA' }}>
+                                Animations
+                            </div>
+                            <div style={{ fontSize: '13px', color: '#71717A' }}>
+                                Stunning effects
+                            </div>
+                        </div>
+                    </motion.a>
+                </motion.div>
 
             </motion.div>
 

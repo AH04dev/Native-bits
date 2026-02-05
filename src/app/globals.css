@@ -231,6 +231,17 @@ section {
   .visible-mobile {
     display: flex !important;
   }
+
+  /* Prevent horizontal scroll */
+  body,
+  html {
+    overflow-x: hidden;
+  }
+
+  /* Mobile hero adjustments */
+  .mesh-gradient {
+    padding-top: 80px;
+  }
 }
 
 /* Desktop visibility */
