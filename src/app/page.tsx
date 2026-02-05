@@ -1,6 +1,7 @@
 import {
   Navbar,
   Hero,
+  FeatureCards,
   Features,
   ComponentShowcase,
   Animations,
@@ -13,6 +14,7 @@ export default function Home() {
     <main>
       <Navbar />
       <Hero />
+      <FeatureCards />
       <ComponentShowcase />
       <Features />
       <Animations />
