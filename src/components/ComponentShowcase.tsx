@@ -3,11 +3,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, ChevronRight, Sparkles } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
 
 type Platform = 'react-native' | 'flutter';
 
 interface Component {
     name: string;
+    slug: string;
     category: string;
     color: string;
     preview: React.ReactNode;
@@ -20,6 +22,7 @@ interface Component {
 const components: Component[] = [
     {
         name: 'Animated Button',
+        slug: 'animated-button',
         category: 'Buttons',
         color: '#10B981',
         preview: (
@@ -61,6 +64,7 @@ AnimatedButton(
     },
     {
         name: 'Gradient Card',
+        slug: 'glass-card',
         category: 'Cards',
         color: '#06B6D4',
         preview: (
@@ -100,6 +104,7 @@ GradientCard(
     },
     {
         name: 'Pulse Loader',
+        slug: 'skeleton-loader',
         category: 'Loaders',
         color: '#22D3EE',
         preview: (
@@ -138,6 +143,7 @@ PulseLoader(
     },
     {
         name: 'Gradient Input',
+        slug: 'input-field',
         category: 'Forms',
         color: '#10B981',
         preview: (
@@ -183,6 +189,7 @@ GradientInput(
     },
     {
         name: 'Toggle Switch',
+        slug: 'toggle-switch',
         category: 'Controls',
         color: '#F59E0B',
         preview: (
@@ -226,6 +233,7 @@ AnimatedSwitch(
     },
     {
         name: 'Floating Action',
+        slug: 'floating-action-button',
         category: 'Buttons',
         color: '#06B6D4',
         preview: (
@@ -268,6 +276,7 @@ FloatingActionButton(
     },
     {
         name: 'Progress Ring',
+        slug: 'progress-ring',
         category: 'Progress',
         color: '#10B981',
         preview: (
@@ -323,6 +332,7 @@ ProgressRing(
     },
     {
         name: 'Skeleton Loader',
+        slug: 'skeleton-loader',
         category: 'Loaders',
         color: '#6B7280',
         preview: (
@@ -369,7 +379,7 @@ SkeletonGroup(
 
 const categories = ['All', 'Buttons', 'Cards', 'Forms', 'Controls', 'Loaders', 'Progress'];
 
-export default function ComponentShowcase() {
+export default function ComponentShowcase({ previewOnly = false }: { previewOnly?: boolean }) {
     const [platform, setPlatform] = useState<Platform>('react-native');
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -378,6 +388,8 @@ export default function ComponentShowcase() {
     const filteredComponents = selectedCategory === 'All'
         ? components
         : components.filter(c => c.category === selectedCategory);
+
+    const displayComponents = previewOnly ? components : filteredComponents;
 
     const handleCopy = (index: number, code: string) => {
         navigator.clipboard.writeText(code);
@@ -444,78 +456,82 @@ export default function ComponentShowcase() {
                     </p>
                 </motion.div>
 
-                {/* Platform Toggle */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}
-                >
-                    <div style={{
-                        display: 'inline-flex',
-                        padding: '4px',
-                        borderRadius: '14px',
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.06)',
-                    }}>
-                        {(['react-native', 'flutter'] as Platform[]).map((p) => (
-                            <button
-                                key={p}
-                                onClick={() => setPlatform(p)}
-                                style={{
-                                    padding: '12px 24px',
-                                    borderRadius: '10px',
-                                    fontSize: '14px',
-                                    fontWeight: 600,
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.3s',
-                                    background: platform === p
-                                        ? 'linear-gradient(135deg, #10B981, #06B6D4)'
-                                        : 'transparent',
-                                    color: platform === p ? '#FFFFFF' : '#6B7280',
-                                }}
-                            >
-                                {p === 'react-native' ? 'React Native' : 'Flutter'}
-                            </button>
-                        ))}
-                    </div>
-                </motion.div>
-
-                {/* Category Filter */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    style={{
-                        display: 'flex',
-                        gap: '8px',
-                        justifyContent: 'center',
-                        flexWrap: 'wrap',
-                        marginBottom: '48px'
-                    }}
-                >
-                    {categories.map((cat) => (
-                        <motion.button
-                            key={cat}
-                            onClick={() => setSelectedCategory(cat)}
-                            style={{
-                                padding: '8px 18px',
-                                borderRadius: '10px',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                border: 'none',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s',
-                                background: selectedCategory === cat ? 'rgba(16, 185, 129, 0.12)' : 'transparent',
-                                color: selectedCategory === cat ? '#34D399' : '#6B7280'
-                            }}
-                            whileHover={{ color: '#F0F0F5' }}
+                {!previewOnly && (
+                    <>
+                        {/* Platform Toggle */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}
                         >
-                            {cat}
-                        </motion.button>
-                    ))}
-                </motion.div>
+                            <div style={{
+                                display: 'inline-flex',
+                                padding: '4px',
+                                borderRadius: '14px',
+                                background: 'rgba(255, 255, 255, 0.03)',
+                                border: '1px solid rgba(255, 255, 255, 0.06)',
+                            }}>
+                                {(['react-native', 'flutter'] as Platform[]).map((p) => (
+                                    <button
+                                        key={p}
+                                        onClick={() => setPlatform(p)}
+                                        style={{
+                                            padding: '12px 24px',
+                                            borderRadius: '10px',
+                                            fontSize: '14px',
+                                            fontWeight: 600,
+                                            border: 'none',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s',
+                                            background: platform === p
+                                                ? 'linear-gradient(135deg, #10B981, #06B6D4)'
+                                                : 'transparent',
+                                            color: platform === p ? '#FFFFFF' : '#6B7280',
+                                        }}
+                                    >
+                                        {p === 'react-native' ? 'React Native' : 'Flutter'}
+                                    </button>
+                                ))}
+                            </div>
+                        </motion.div>
+
+                        {/* Category Filter */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            style={{
+                                display: 'flex',
+                                gap: '8px',
+                                justifyContent: 'center',
+                                flexWrap: 'wrap',
+                                marginBottom: '48px'
+                            }}
+                        >
+                            {categories.map((cat) => (
+                                <motion.button
+                                    key={cat}
+                                    onClick={() => setSelectedCategory(cat)}
+                                    style={{
+                                        padding: '8px 18px',
+                                        borderRadius: '10px',
+                                        fontSize: '13px',
+                                        fontWeight: 500,
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s',
+                                        background: selectedCategory === cat ? 'rgba(16, 185, 129, 0.12)' : 'transparent',
+                                        color: selectedCategory === cat ? '#34D399' : '#6B7280'
+                                    }}
+                                    whileHover={{ color: '#F0F0F5' }}
+                                >
+                                    {cat}
+                                </motion.button>
+                            ))}
+                        </motion.div>
+                    </>
+                )}
 
                 {/* Components Grid */}
                 <div style={{
@@ -524,142 +540,155 @@ export default function ComponentShowcase() {
                     gap: '16px'
                 }}>
                     <AnimatePresence mode="popLayout">
-                        {filteredComponents.map((component, index) => (
-                            <motion.div
-                                key={component.name}
-                                layout
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                                style={{
-                                    background: 'linear-gradient(145deg, rgba(17, 17, 24, 0.85), rgba(10, 10, 15, 0.95))',
-                                    borderRadius: '20px',
-                                    border: '1px solid rgba(255, 255, 255, 0.05)',
-                                    overflow: 'hidden',
-                                    transition: 'border-color 0.3s',
-                                }}
-                            >
-                                {/* Preview */}
-                                <div style={{
-                                    height: '120px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    background: 'rgba(0, 0, 0, 0.3)',
-                                    borderBottom: '1px solid rgba(255, 255, 255, 0.04)'
-                                }}>
-                                    {component.preview}
-                                </div>
-
-                                {/* Info */}
-                                <div style={{ padding: '16px 20px' }}>
+                        {displayComponents.map((component, index) => {
+                            const card = (
+                                <motion.div
+                                    key={component.name}
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                                    whileHover={{ borderColor: 'rgba(16, 185, 129, 0.2)' }}
+                                    style={{
+                                        background: 'linear-gradient(145deg, rgba(17, 17, 24, 0.85), rgba(10, 10, 15, 0.95))',
+                                        borderRadius: '20px',
+                                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                                        overflow: 'hidden',
+                                        transition: 'border-color 0.3s',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    {/* Preview */}
                                     <div style={{
+                                        height: previewOnly ? '140px' : '120px',
                                         display: 'flex',
                                         alignItems: 'center',
-                                        justifyContent: 'space-between',
-                                        marginBottom: '12px'
+                                        justifyContent: 'center',
+                                        background: 'rgba(0, 0, 0, 0.3)',
+                                        borderBottom: previewOnly ? 'none' : '1px solid rgba(255, 255, 255, 0.04)'
                                     }}>
-                                        <div>
-                                            <div style={{ fontSize: '14px', fontWeight: 600, color: '#F0F0F5' }}>{component.name}</div>
-                                            <div style={{ fontSize: '12px', color: '#6B7280' }}>{component.category}</div>
-                                        </div>
-                                        <motion.button
-                                            onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
-                                            style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '4px',
-                                                padding: '8px 12px',
-                                                borderRadius: '8px',
-                                                background: expandedIndex === index ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 255, 255, 0.04)',
-                                                border: 'none',
-                                                color: expandedIndex === index ? '#34D399' : '#9CA3AF',
-                                                fontSize: '12px',
-                                                fontWeight: 500,
-                                                cursor: 'pointer'
-                                            }}
-                                            whileHover={{ background: 'rgba(16, 185, 129, 0.1)', color: '#34D399' }}
-                                        >
-                                            Code
-                                            <motion.span
-                                                animate={{ rotate: expandedIndex === index ? 90 : 0 }}
-                                                transition={{ duration: 0.2 }}
-                                            >
-                                                <ChevronRight size={14} />
-                                            </motion.span>
-                                        </motion.button>
+                                        {component.preview}
                                     </div>
 
-                                    {/* Code Panel */}
-                                    <AnimatePresence>
-                                        {expandedIndex === index && (
-                                            <motion.div
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: 'auto', opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                                                style={{ overflow: 'hidden' }}
-                                            >
-                                                <div style={{
-                                                    background: 'rgba(0, 0, 0, 0.4)',
-                                                    borderRadius: '12px',
-                                                    padding: '14px',
-                                                    marginTop: '8px',
-                                                    border: '1px solid rgba(16, 185, 129, 0.08)',
-                                                }}>
-                                                    <div style={{
+                                    {/* Info — minimal in preview mode */}
+                                    <div style={{ padding: previewOnly ? '12px 20px' : '16px 20px' }}>
+                                        <div style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            marginBottom: previewOnly ? '0' : '12px'
+                                        }}>
+                                            <div>
+                                                <div style={{ fontSize: '14px', fontWeight: 600, color: '#F0F0F5' }}>{component.name}</div>
+                                                <div style={{ fontSize: '12px', color: '#6B7280' }}>{component.category}</div>
+                                            </div>
+                                            {!previewOnly && (
+                                                <motion.button
+                                                    onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+                                                    style={{
                                                         display: 'flex',
                                                         alignItems: 'center',
-                                                        justifyContent: 'space-between',
-                                                        marginBottom: '12px'
-                                                    }}>
-                                                        <span style={{
-                                                            fontSize: '11px',
-                                                            color: '#6B7280',
-                                                            fontWeight: 600,
-                                                            textTransform: 'uppercase',
-                                                            letterSpacing: '0.05em'
+                                                        gap: '4px',
+                                                        padding: '8px 12px',
+                                                        borderRadius: '8px',
+                                                        background: expandedIndex === index ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 255, 255, 0.04)',
+                                                        border: 'none',
+                                                        color: expandedIndex === index ? '#34D399' : '#9CA3AF',
+                                                        fontSize: '12px',
+                                                        fontWeight: 500,
+                                                        cursor: 'pointer'
+                                                    }}
+                                                    whileHover={{ background: 'rgba(16, 185, 129, 0.1)', color: '#34D399' }}
+                                                >
+                                                    Code
+                                                    <motion.span
+                                                        animate={{ rotate: expandedIndex === index ? 90 : 0 }}
+                                                        transition={{ duration: 0.2 }}
+                                                    >
+                                                        <ChevronRight size={14} />
+                                                    </motion.span>
+                                                </motion.button>
+                                            )}
+                                        </div>
+
+                                        {/* Code Panel — hidden in preview mode */}
+                                        {!previewOnly && (
+                                            <AnimatePresence>
+                                                {expandedIndex === index && (
+                                                    <motion.div
+                                                        initial={{ height: 0, opacity: 0 }}
+                                                        animate={{ height: 'auto', opacity: 1 }}
+                                                        exit={{ height: 0, opacity: 0 }}
+                                                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                                                        style={{ overflow: 'hidden' }}
+                                                    >
+                                                        <div style={{
+                                                            background: 'rgba(0, 0, 0, 0.4)',
+                                                            borderRadius: '12px',
+                                                            padding: '14px',
+                                                            marginTop: '8px',
+                                                            border: '1px solid rgba(16, 185, 129, 0.08)',
                                                         }}>
-                                                            {platform === 'react-native' ? 'React Native' : 'Flutter'}
-                                                        </span>
-                                                        <motion.button
-                                                            onClick={() => handleCopy(index, component.code[platform])}
-                                                            style={{
+                                                            <div style={{
                                                                 display: 'flex',
                                                                 alignItems: 'center',
-                                                                gap: '6px',
-                                                                padding: '6px 10px',
-                                                                borderRadius: '6px',
-                                                                background: copiedIndex === index ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.04)',
-                                                                border: 'none',
-                                                                color: copiedIndex === index ? '#10B981' : '#9CA3AF',
+                                                                justifyContent: 'space-between',
+                                                                marginBottom: '12px'
+                                                            }}>
+                                                                <span style={{
+                                                                    fontSize: '11px',
+                                                                    color: '#6B7280',
+                                                                    fontWeight: 600,
+                                                                    textTransform: 'uppercase',
+                                                                    letterSpacing: '0.05em'
+                                                                }}>
+                                                                    {platform === 'react-native' ? 'React Native' : 'Flutter'}
+                                                                </span>
+                                                                <motion.button
+                                                                    onClick={() => handleCopy(index, component.code[platform])}
+                                                                    style={{
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        gap: '6px',
+                                                                        padding: '6px 10px',
+                                                                        borderRadius: '6px',
+                                                                        background: copiedIndex === index ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.04)',
+                                                                        border: 'none',
+                                                                        color: copiedIndex === index ? '#10B981' : '#9CA3AF',
+                                                                        fontSize: '11px',
+                                                                        cursor: 'pointer'
+                                                                    }}
+                                                                    whileTap={{ scale: 0.95 }}
+                                                                >
+                                                                    {copiedIndex === index ? <Check size={12} /> : <Copy size={12} />}
+                                                                    {copiedIndex === index ? 'Copied!' : 'Copy'}
+                                                                </motion.button>
+                                                            </div>
+                                                            <pre style={{
+                                                                margin: 0,
                                                                 fontSize: '11px',
-                                                                cursor: 'pointer'
-                                                            }}
-                                                            whileTap={{ scale: 0.95 }}
-                                                        >
-                                                            {copiedIndex === index ? <Check size={12} /> : <Copy size={12} />}
-                                                            {copiedIndex === index ? 'Copied!' : 'Copy'}
-                                                        </motion.button>
-                                                    </div>
-                                                    <pre style={{
-                                                        margin: 0,
-                                                        fontSize: '11px',
-                                                        color: '#9CA3AF',
-                                                        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                                                        whiteSpace: 'pre-wrap',
-                                                        lineHeight: 1.6
-                                                    }}>
-                                                        <code>{component.code[platform]}</code>
-                                                    </pre>
-                                                </div>
-                                            </motion.div>
+                                                                color: '#9CA3AF',
+                                                                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+                                                                whiteSpace: 'pre-wrap',
+                                                                lineHeight: 1.6
+                                                            }}>
+                                                                <code>{component.code[platform]}</code>
+                                                            </pre>
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
                                         )}
-                                    </AnimatePresence>
-                                </div>
-                            </motion.div>
-                        ))}
+                                    </div>
+                                </motion.div>
+                            );
+                            return (
+                                <Link key={component.name} href={`/docs/components/${component.slug}`} style={{ textDecoration: 'none' }}>
+                                    {card}
+                                </Link>
+                            );
+                        })}
                     </AnimatePresence>
                 </div>
             </div>

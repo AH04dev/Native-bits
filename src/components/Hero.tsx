@@ -1,8 +1,8 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Play, Star, Download, Layers } from 'lucide-react';
-import { useRef } from 'react';
+import { ArrowRight, Play, Star, Download, Layers, Copy, Check } from 'lucide-react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import ColorBends from './ColorBends';
 
@@ -166,31 +166,33 @@ export default function Hero() {
                         marginBottom: '56px',
                     }}
                 >
-                    <motion.button
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            background: 'linear-gradient(135deg, #10B981 0%, #06B6D4 100%)',
-                            color: '#FFFFFF',
-                            padding: '16px 32px',
-                            borderRadius: '14px',
-                            fontSize: '15px',
-                            fontWeight: 600,
-                            border: 'none',
-                            cursor: 'pointer',
-                        }}
-                        whileHover={{
-                            scale: 1.02,
-                            boxShadow: '0 0 50px rgba(16, 185, 129, 0.35)'
-                        }}
-                        whileTap={{ scale: 0.98 }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                    >
-                        Browse Components
-                        <ArrowRight style={{ width: '18px', height: '18px' }} />
-                    </motion.button>
-                    <Link href="/sandbox">
+                    <Link href="/docs">
+                        <motion.button
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                background: 'linear-gradient(135deg, #10B981 0%, #06B6D4 100%)',
+                                color: '#FFFFFF',
+                                padding: '16px 32px',
+                                borderRadius: '14px',
+                                fontSize: '15px',
+                                fontWeight: 600,
+                                border: 'none',
+                                cursor: 'pointer',
+                            }}
+                            whileHover={{
+                                scale: 1.02,
+                                boxShadow: '0 0 50px rgba(16, 185, 129, 0.35)'
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                        >
+                            Get Started
+                            <ArrowRight style={{ width: '18px', height: '18px' }} />
+                        </motion.button>
+                    </Link>
+                    <Link href="/components">
                         <motion.button
                             style={{
                                 display: 'inline-flex',
@@ -212,8 +214,7 @@ export default function Hero() {
                             whileTap={{ scale: 0.98 }}
                             transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                         >
-                            <Play style={{ width: '16px', height: '16px', fill: 'currentColor' }} />
-                            Try Sandbox
+                            Browse Components
                         </motion.button>
                     </Link>
                 </motion.div>

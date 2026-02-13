@@ -3,11 +3,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, ChevronRight, Zap } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
 
 type Platform = 'react-native' | 'flutter';
 
 interface AnimationType {
     name: string;
+    slug: string;
     preview: React.ReactNode;
     code: {
         'react-native': string;
@@ -18,6 +20,7 @@ interface AnimationType {
 const animations: AnimationType[] = [
     {
         name: 'Fade In Up',
+        slug: 'fade-in-up',
         preview: (
             <motion.div
                 style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #10B981, #06B6D4)' }}
@@ -42,6 +45,7 @@ FadeInUp(
     },
     {
         name: 'Scale Pop',
+        slug: 'scale-pop',
         preview: (
             <motion.div
                 style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #06B6D4, #22D3EE)' }}
@@ -66,6 +70,7 @@ ScalePop(
     },
     {
         name: 'Rotate In',
+        slug: 'rotate-in',
         preview: (
             <motion.div
                 style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #F59E0B, #EF4444)' }}
@@ -90,6 +95,7 @@ RotateIn(
     },
     {
         name: 'Slide In Right',
+        slug: 'slide-in-right',
         preview: (
             <motion.div
                 style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #10B981, #34D399)' }}
@@ -114,6 +120,7 @@ SlideInRight(
     },
     {
         name: 'Bounce',
+        slug: 'bounce',
         preview: (
             <motion.div
                 style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #06B6D4, #10B981)' }}
@@ -138,6 +145,7 @@ Bounce(
     },
     {
         name: 'Flip',
+        slug: 'flip',
         preview: (
             <motion.div
                 style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #22D3EE, #06B6D4)' }}
@@ -162,6 +170,7 @@ Flip(
     },
     {
         name: 'Shimmer',
+        slug: 'shimmer',
         preview: (
             <div style={{
                 width: '100px',
@@ -206,6 +215,7 @@ Shimmer(
     },
     {
         name: 'Stagger List',
+        slug: 'stagger-list',
         preview: (
             <div style={{ display: 'flex', gap: '6px' }}>
                 {[0, 1, 2, 3].map((i) => (
@@ -243,7 +253,7 @@ StaggerList(
     }
 ];
 
-export default function Animations() {
+export default function Animations({ previewOnly = false }: { previewOnly?: boolean }) {
     const [platform, setPlatform] = useState<Platform>('react-native');
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
     const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
@@ -312,38 +322,39 @@ export default function Animations() {
                     </p>
                 </motion.div>
 
-                {/* Platform Toggle */}
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '48px' }}>
-                    <div style={{
-                        display: 'inline-flex',
-                        padding: '4px',
-                        borderRadius: '14px',
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.06)',
-                    }}>
-                        {(['react-native', 'flutter'] as Platform[]).map((p) => (
-                            <button
-                                key={p}
-                                onClick={() => setPlatform(p)}
-                                style={{
-                                    padding: '12px 24px',
-                                    borderRadius: '10px',
-                                    fontSize: '14px',
-                                    fontWeight: 600,
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.3s',
-                                    background: platform === p
-                                        ? 'linear-gradient(135deg, #06B6D4, #22D3EE)'
-                                        : 'transparent',
-                                    color: platform === p ? '#FFFFFF' : '#6B7280',
-                                }}
-                            >
-                                {p === 'react-native' ? 'React Native' : 'Flutter'}
-                            </button>
-                        ))}
+                {!previewOnly && (
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '48px' }}>
+                        <div style={{
+                            display: 'inline-flex',
+                            padding: '4px',
+                            borderRadius: '14px',
+                            background: 'rgba(255, 255, 255, 0.03)',
+                            border: '1px solid rgba(255, 255, 255, 0.06)',
+                        }}>
+                            {(['react-native', 'flutter'] as Platform[]).map((p) => (
+                                <button
+                                    key={p}
+                                    onClick={() => setPlatform(p)}
+                                    style={{
+                                        padding: '12px 24px',
+                                        borderRadius: '10px',
+                                        fontSize: '14px',
+                                        fontWeight: 600,
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s',
+                                        background: platform === p
+                                            ? 'linear-gradient(135deg, #06B6D4, #22D3EE)'
+                                            : 'transparent',
+                                        color: platform === p ? '#FFFFFF' : '#6B7280',
+                                    }}
+                                >
+                                    {p === 'react-native' ? 'React Native' : 'Flutter'}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Animations Grid */}
                 <div style={{
@@ -351,138 +362,151 @@ export default function Animations() {
                     gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
                     gap: '16px'
                 }}>
-                    {animations.map((anim, index) => (
-                        <motion.div
-                            key={anim.name}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.06 }}
-                            style={{
-                                background: 'linear-gradient(145deg, rgba(17, 17, 24, 0.85), rgba(10, 10, 15, 0.95))',
-                                borderRadius: '20px',
-                                border: '1px solid rgba(255, 255, 255, 0.05)',
-                                overflow: 'hidden',
-                                transition: 'border-color 0.3s',
-                            }}
-                        >
-                            {/* Preview */}
-                            <div style={{
-                                height: '120px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                background: 'rgba(0, 0, 0, 0.3)',
-                                borderBottom: '1px solid rgba(255, 255, 255, 0.04)'
-                            }}>
-                                {anim.preview}
-                            </div>
-
-                            {/* Info */}
-                            <div style={{ padding: '16px 20px' }}>
+                    {animations.map((anim, index) => {
+                        const card = (
+                            <motion.div
+                                key={anim.name}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: index * 0.06 }}
+                                whileHover={{ borderColor: 'rgba(6, 182, 212, 0.25)' }}
+                                style={{
+                                    background: 'linear-gradient(145deg, rgba(17, 17, 24, 0.85), rgba(10, 10, 15, 0.95))',
+                                    borderRadius: '20px',
+                                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                                    overflow: 'hidden',
+                                    transition: 'border-color 0.3s',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                {/* Preview */}
                                 <div style={{
+                                    height: previewOnly ? '140px' : '120px',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    marginBottom: '12px'
+                                    justifyContent: 'center',
+                                    background: 'rgba(0, 0, 0, 0.3)',
+                                    borderBottom: previewOnly ? 'none' : '1px solid rgba(255, 255, 255, 0.04)'
                                 }}>
-                                    <span style={{ fontSize: '14px', fontWeight: 600, color: '#F0F0F5' }}>{anim.name}</span>
-                                    <motion.button
-                                        onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '4px',
-                                            padding: '8px 12px',
-                                            borderRadius: '8px',
-                                            background: expandedIndex === index ? 'rgba(6, 182, 212, 0.1)' : 'rgba(255, 255, 255, 0.04)',
-                                            border: 'none',
-                                            color: expandedIndex === index ? '#22D3EE' : '#9CA3AF',
-                                            fontSize: '12px',
-                                            fontWeight: 500,
-                                            cursor: 'pointer'
-                                        }}
-                                        whileHover={{ background: 'rgba(6, 182, 212, 0.1)', color: '#22D3EE' }}
-                                    >
-                                        Code
-                                        <motion.span
-                                            animate={{ rotate: expandedIndex === index ? 90 : 0 }}
-                                            transition={{ duration: 0.2 }}
-                                        >
-                                            <ChevronRight size={14} />
-                                        </motion.span>
-                                    </motion.button>
+                                    {anim.preview}
                                 </div>
 
-                                {/* Code Panel */}
-                                <AnimatePresence>
-                                    {expandedIndex === index && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: 'auto', opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                                            style={{ overflow: 'hidden' }}
-                                        >
-                                            <div style={{
-                                                background: 'rgba(0, 0, 0, 0.4)',
-                                                borderRadius: '12px',
-                                                padding: '14px',
-                                                marginTop: '8px',
-                                                border: '1px solid rgba(6, 182, 212, 0.08)',
-                                            }}>
-                                                <div style={{
+                                {/* Info — minimal in preview mode */}
+                                <div style={{ padding: previewOnly ? '12px 20px' : '16px 20px' }}>
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        marginBottom: previewOnly ? '0' : '12px'
+                                    }}>
+                                        <span style={{ fontSize: '14px', fontWeight: 600, color: '#F0F0F5' }}>{anim.name}</span>
+                                        {!previewOnly && (
+                                            <motion.button
+                                                onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+                                                style={{
                                                     display: 'flex',
                                                     alignItems: 'center',
-                                                    justifyContent: 'space-between',
-                                                    marginBottom: '12px'
-                                                }}>
-                                                    <span style={{
-                                                        fontSize: '11px',
-                                                        color: '#6B7280',
-                                                        fontWeight: 600,
-                                                        textTransform: 'uppercase',
-                                                        letterSpacing: '0.05em'
+                                                    gap: '4px',
+                                                    padding: '8px 12px',
+                                                    borderRadius: '8px',
+                                                    background: expandedIndex === index ? 'rgba(6, 182, 212, 0.1)' : 'rgba(255, 255, 255, 0.04)',
+                                                    border: 'none',
+                                                    color: expandedIndex === index ? '#22D3EE' : '#9CA3AF',
+                                                    fontSize: '12px',
+                                                    fontWeight: 500,
+                                                    cursor: 'pointer'
+                                                }}
+                                                whileHover={{ background: 'rgba(6, 182, 212, 0.1)', color: '#22D3EE' }}
+                                            >
+                                                Code
+                                                <motion.span
+                                                    animate={{ rotate: expandedIndex === index ? 90 : 0 }}
+                                                    transition={{ duration: 0.2 }}
+                                                >
+                                                    <ChevronRight size={14} />
+                                                </motion.span>
+                                            </motion.button>
+                                        )}
+                                    </div>
+
+                                    {/* Code Panel — hidden in preview mode */}
+                                    {!previewOnly && (
+                                        <AnimatePresence>
+                                            {expandedIndex === index && (
+                                                <motion.div
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                                                    style={{ overflow: 'hidden' }}
+                                                >
+                                                    <div style={{
+                                                        background: 'rgba(0, 0, 0, 0.4)',
+                                                        borderRadius: '12px',
+                                                        padding: '14px',
+                                                        marginTop: '8px',
+                                                        border: '1px solid rgba(6, 182, 212, 0.08)',
                                                     }}>
-                                                        {platform === 'react-native' ? 'React Native' : 'Flutter'}
-                                                    </span>
-                                                    <motion.button
-                                                        onClick={() => handleCopy(index, anim.code[platform])}
-                                                        style={{
+                                                        <div style={{
                                                             display: 'flex',
                                                             alignItems: 'center',
-                                                            gap: '6px',
-                                                            padding: '6px 10px',
-                                                            borderRadius: '6px',
-                                                            background: copiedIndex === index ? 'rgba(6, 182, 212, 0.15)' : 'rgba(255, 255, 255, 0.04)',
-                                                            border: 'none',
-                                                            color: copiedIndex === index ? '#06B6D4' : '#9CA3AF',
+                                                            justifyContent: 'space-between',
+                                                            marginBottom: '12px'
+                                                        }}>
+                                                            <span style={{
+                                                                fontSize: '11px',
+                                                                color: '#6B7280',
+                                                                fontWeight: 600,
+                                                                textTransform: 'uppercase',
+                                                                letterSpacing: '0.05em'
+                                                            }}>
+                                                                {platform === 'react-native' ? 'React Native' : 'Flutter'}
+                                                            </span>
+                                                            <motion.button
+                                                                onClick={() => handleCopy(index, anim.code[platform])}
+                                                                style={{
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    gap: '6px',
+                                                                    padding: '6px 10px',
+                                                                    borderRadius: '6px',
+                                                                    background: copiedIndex === index ? 'rgba(6, 182, 212, 0.15)' : 'rgba(255, 255, 255, 0.04)',
+                                                                    border: 'none',
+                                                                    color: copiedIndex === index ? '#06B6D4' : '#9CA3AF',
+                                                                    fontSize: '11px',
+                                                                    cursor: 'pointer'
+                                                                }}
+                                                                whileTap={{ scale: 0.95 }}
+                                                            >
+                                                                {copiedIndex === index ? <Check size={12} /> : <Copy size={12} />}
+                                                                {copiedIndex === index ? 'Copied!' : 'Copy'}
+                                                            </motion.button>
+                                                        </div>
+                                                        <pre style={{
+                                                            margin: 0,
                                                             fontSize: '11px',
-                                                            cursor: 'pointer'
-                                                        }}
-                                                        whileTap={{ scale: 0.95 }}
-                                                    >
-                                                        {copiedIndex === index ? <Check size={12} /> : <Copy size={12} />}
-                                                        {copiedIndex === index ? 'Copied!' : 'Copy'}
-                                                    </motion.button>
-                                                </div>
-                                                <pre style={{
-                                                    margin: 0,
-                                                    fontSize: '11px',
-                                                    color: '#9CA3AF',
-                                                    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                                                    whiteSpace: 'pre-wrap',
-                                                    lineHeight: 1.6
-                                                }}>
-                                                    <code>{anim.code[platform]}</code>
-                                                </pre>
-                                            </div>
-                                        </motion.div>
+                                                            color: '#9CA3AF',
+                                                            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+                                                            whiteSpace: 'pre-wrap',
+                                                            lineHeight: 1.6
+                                                        }}>
+                                                            <code>{anim.code[platform]}</code>
+                                                        </pre>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
                                     )}
-                                </AnimatePresence>
-                            </div>
-                        </motion.div>
-                    ))}
+                                </div>
+                            </motion.div>
+                        );
+                        return (
+                            <Link key={anim.name} href={`/docs/animations/${anim.slug}`} style={{ textDecoration: 'none' }}>
+                                {card}
+                            </Link>
+                        );
+                    })}
                 </div>
             </div>
         </section>

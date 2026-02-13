@@ -15,9 +15,9 @@ export default function Home() {
       <Navbar />
       <Hero />
       <FeatureCards />
-      <ComponentShowcase />
+      <ComponentShowcase previewOnly />
       <Features />
-      <Animations />
+      <Animations previewOnly />
 
       <CTA />
       <Footer />

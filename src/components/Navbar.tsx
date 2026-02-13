@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Github, Star, ArrowUpRight, Zap, Heart } from 'lucide-react';
 
 const navLinks = [
+    { name: 'Docs', href: '/docs' },
     { name: 'Components', href: '/components' },
     { name: 'Animations', href: '/animations' },
     { name: 'Sandbox', href: '/sandbox' },
