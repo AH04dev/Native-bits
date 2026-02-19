@@ -1,648 +1,284 @@
-'use client';
+﻿'use client';
 
-import { useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Copy, Check, RotateCcw, Sparkles, ArrowLeft, Smartphone, Tablet, Monitor } from 'lucide-react';
-import Link from 'next/link';
+import { Check, Copy, Monitor, Play, RefreshCcw, Smartphone, Tablet } from 'lucide-react';
+import { Footer, Navbar } from '@/components';
 
 type Platform = 'react-native' | 'flutter';
-type DeviceType = 'phone' | 'tablet' | 'desktop';
+type Device = 'phone' | 'tablet' | 'desktop';
+type Template = 'button' | 'card' | 'animation';
 
-const starterTemplates = {
-    'react-native': {
-        button: `import { AnimatedButton } from 'mobileui-pro';
-import { View } from 'react-native';
+const snippets = {
+  'react-native': {
+    button: `import AnimatedButton from './native-bits/animated-button';
 
-export default function App() {
-  const handlePress = () => {
-    console.log('Button pressed!');
-  };
+<AnimatedButton
+  title="Pay now"
+  onPress={submitOrder}
+/>`,
+    card: `import GlassCard from './native-bits/glass-card';
 
-  return (
-    <View style={{ 
-      flex: 1, 
-      justifyContent: 'center', 
-      alignItems: 'center',
-      backgroundColor: '#060010'
-    }}>
-      <AnimatedButton
-        title="Click Me"
-        variant="primary"
-        onPress={handlePress}
-        gradient={['#8b5cf6', '#7c3aed']}
-      />
-    </View>
-  );
-}`,
-        card: `import { GradientCard } from 'mobileui-pro';
-import { View, Text } from 'react-native';
+<GlassCard intensity={42}>
+  <ProfileSummary />
+</GlassCard>`,
+    animation: `import FadeInUp from './native-bits/fade-in-up';
 
-export default function App() {
-  return (
-    <View style={{ 
-      flex: 1, 
-      padding: 20,
-      backgroundColor: '#060010'
-    }}>
-      <GradientCard
-        gradient={['#22d3ee', '#06b6d4']}
-        title="Welcome"
-        description="This is an interactive card"
-        onPress={() => alert('Card tapped!')}
-      />
-    </View>
-  );
-}`,
-        animation: `import { FadeInUp, Bounce } from 'mobileui-pro/animations';
-import { View, Text } from 'react-native';
+<FadeInUp delay={120}>
+  <StatsPanel />
+</FadeInUp>`,
+  },
+  flutter: {
+    button: `import 'package:native_bits/native_bits.dart';
 
-export default function App() {
-  return (
-    <View style={{ 
-      flex: 1, 
-      justifyContent: 'center', 
-      alignItems: 'center',
-      backgroundColor: '#060010'
-    }}>
-      <FadeInUp duration={600}>
-        <Text style={{ color: 'white', fontSize: 24 }}>
-          Hello World!
-        </Text>
-      </FadeInUp>
-      
-      <Bounce height={20} loop>
-        <View style={{
-          width: 60,
-          height: 60,
-          borderRadius: 30,
-          backgroundColor: '#8b5cf6',
-          marginTop: 30
-        }} />
-      </Bounce>
-    </View>
-  );
-}`
-    },
-    flutter: {
-        button: `import 'package:flutter/material.dart';
-import 'package:mobileui_pro/mobileui_pro.dart';
+AnimatedButton(
+  text: 'Pay now',
+  onPressed: submitOrder,
+)`,
+    card: `import 'package:native_bits/native_bits.dart';
 
-class MyApp extends StatelessWidget {
-  void handlePress() {
-    print('Button pressed!');
-  }
+GlassCard(
+  intensity: 42,
+  child: ProfileSummary(),
+)`,
+    animation: `import 'package:native_bits/animations.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF060010),
-      body: Center(
-        child: AnimatedButton(
-          text: 'Click Me',
-          variant: ButtonVariant.primary,
-          onPressed: handlePress,
-          gradient: [Color(0xFF8b5cf6), Color(0xFF7c3aed)],
-        ),
-      ),
-    );
-  }
-}`,
-        card: `import 'package:flutter/material.dart';
-import 'package:mobileui_pro/mobileui_pro.dart';
+FadeInUp(
+  delay: const Duration(milliseconds: 120),
+  child: StatsPanel(),
+)`,
+  },
+} as const;
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF060010),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: GradientCard(
-          gradient: [Color(0xFF22d3ee), Color(0xFF06b6d4)],
-          title: 'Welcome',
-          description: 'This is an interactive card',
-          onTap: () => showSnackBar('Card tapped!'),
-        ),
-      ),
-    );
-  }
-}`,
-        animation: `import 'package:flutter/material.dart';
-import 'package:mobileui_pro/animations.dart';
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF060010),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FadeInUp(
-              duration: Duration(milliseconds: 600),
-              child: Text(
-                'Hello World!',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
-            SizedBox(height: 30),
-            Bounce(
-              height: 20,
-              loop: true,
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Color(0xFF8b5cf6),
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}`
-    }
+const deviceSize: Record<Device, { width: string; height: string }> = {
+  phone: { width: '320px', height: '620px' },
+  tablet: { width: '440px', height: '620px' },
+  desktop: { width: '100%', height: '100%' },
 };
 
 export default function SandboxPage() {
-    const [platform, setPlatform] = useState<Platform>('react-native');
-    const [code, setCode] = useState(starterTemplates['react-native'].button);
-    const [template, setTemplate] = useState('button');
-    const [copied, setCopied] = useState(false);
-    const [isRunning, setIsRunning] = useState(true);
-    const [device, setDevice] = useState<DeviceType>('phone');
-    const [logs, setLogs] = useState<string[]>([
-        '> App initialized',
-        '> Waiting for changes...'
-    ]);
+  const [platform, setPlatform] = useState<Platform>('react-native');
+  const [template, setTemplate] = useState<Template>('button');
+  const [device, setDevice] = useState<Device>('phone');
+  const [running, setRunning] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const [logs, setLogs] = useState<string[]>(['> Sandbox ready', '> Select a template']);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => {
-        setCode(starterTemplates[platform][template as keyof typeof starterTemplates['react-native']]);
-    }, [platform, template]);
+  const code = useMemo(() => snippets[platform][template], [platform, template]);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(code);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+  const copyCode = async () => {
+    await navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1600);
+  };
 
-    const handleReset = () => {
-        setCode(starterTemplates[platform][template as keyof typeof starterTemplates['react-native']]);
-        setLogs(prev => [...prev, '> Code reset to template']);
-    };
+  const runPreview = () => {
+    setRunning(false);
+    setLogs((prev) => [...prev, '> Building preview...']);
 
-    const handleRun = () => {
-        setIsRunning(false);
-        setLogs(prev => [...prev, '> Compiling...']);
-        setTimeout(() => {
-            setIsRunning(true);
-            setLogs(prev => [...prev, '> Build successful!', '> App running']);
-        }, 800);
-    };
+    setTimeout(() => {
+      setRunning(true);
+      setLogs((prev) => [...prev, '> Build complete', '> Preview synced']);
+    }, 600);
+  };
 
-    const deviceSizes = {
-        phone: { width: '320px', height: '568px' },
-        tablet: { width: '500px', height: '600px' },
-        desktop: { width: '100%', height: '100%' }
-    };
+  return (
+    <main>
+      <Navbar />
 
-    return (
-        <div style={{
-            minHeight: '100vh',
-            background: '#060010',
-            display: 'flex',
-            flexDirection: 'column'
-        }}>
-            {/* Header */}
-            <header style={{
-                padding: '16px 24px',
-                borderBottom: '1px solid rgba(139, 92, 246, 0.15)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                background: 'rgba(6, 0, 16, 0.95)',
-                backdropFilter: 'blur(20px)',
-                position: 'sticky',
-                top: 0,
-                zIndex: 50
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <Link
-                        href="/"
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            color: '#a1a1aa',
-                            textDecoration: 'none',
-                            fontSize: '14px'
-                        }}
+      <section className="ui-section pt-28">
+        <div className="ui-container">
+          <div className="mb-5">
+            <span className="section-kicker">Sandbox</span>
+            <h1 className="section-title mt-4">Live mobile preview workspace</h1>
+            <p className="section-subtitle mt-4 max-w-3xl">
+              Switch between React Native and Flutter snippets, preview UI behavior, and validate
+              design decisions quickly.
+            </p>
+          </div>
+
+          <div className="grid gap-4 xl:grid-cols-[1.04fr_0.96fr]">
+            <section className="glass rounded-3xl p-4 md:p-5">
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-1 rounded-full border border-white/20 bg-white/5 p-1">
+                  {(['react-native', 'flutter'] as Platform[]).map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => setPlatform(option)}
+                      className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] ${
+                        platform === option
+                          ? 'bg-[linear-gradient(135deg,#38bdf8_0%,#f8fbff_100%)] text-[#031321]'
+                          : 'text-[var(--text-dim)]'
+                      }`}
                     >
-                        <ArrowLeft size={18} />
-                        Back
-                    </Link>
-                    <div style={{ width: '1px', height: '24px', background: 'rgba(139, 92, 246, 0.2)' }} />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '8px',
-                            background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            <Sparkles size={16} color="white" />
-                        </div>
-                        <span style={{ fontSize: '16px', fontWeight: 600, color: 'white' }}>Sandbox</span>
-                    </div>
+                      {option === 'react-native' ? 'React Native' : 'Flutter'}
+                    </button>
+                  ))}
                 </div>
 
-                {/* Platform Toggle */}
-                <div style={{
-                    display: 'flex',
-                    padding: '4px',
-                    borderRadius: '10px',
-                    background: 'rgba(13, 13, 26, 0.8)',
-                    border: '1px solid rgba(139, 92, 246, 0.2)'
-                }}>
+                <div className="flex flex-wrap gap-1.5">
+                  {(['button', 'card', 'animation'] as Template[]).map((item) => (
                     <button
-                        onClick={() => setPlatform('react-native')}
-                        style={{
-                            padding: '8px 16px',
-                            borderRadius: '6px',
-                            fontSize: '13px',
-                            fontWeight: 600,
-                            border: 'none',
-                            cursor: 'pointer',
-                            background: platform === 'react-native' ? 'linear-gradient(135deg, #8b5cf6, #7c3aed)' : 'transparent',
-                            color: platform === 'react-native' ? 'white' : '#71717a'
-                        }}
+                      key={item}
+                      type="button"
+                      onClick={() => setTemplate(item)}
+                      className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] ${
+                        template === item
+                          ? 'border-cyan-300/70 bg-cyan-300/20 text-cyan-100'
+                          : 'border-white/20 bg-white/5 text-[var(--text-muted)]'
+                      }`}
                     >
-                        React Native
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="code-shell rounded-2xl p-3">
+                <div className="mb-2 flex items-center justify-between">
+                  <p className="text-xs uppercase tracking-[0.1em] text-[var(--text-muted)]">
+                    {platform === 'react-native' ? 'TypeScript' : 'Dart'}
+                  </p>
+
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setLogs((prev) => [...prev, '> Template reset'])}
+                      className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--text-dim)]"
+                    >
+                      <RefreshCcw size={11} />
+                      Reset
                     </button>
                     <button
-                        onClick={() => setPlatform('flutter')}
-                        style={{
-                            padding: '8px 16px',
-                            borderRadius: '6px',
-                            fontSize: '13px',
-                            fontWeight: 600,
-                            border: 'none',
-                            cursor: 'pointer',
-                            background: platform === 'flutter' ? 'linear-gradient(135deg, #22d3ee, #06b6d4)' : 'transparent',
-                            color: platform === 'flutter' ? 'white' : '#71717a'
-                        }}
+                      type="button"
+                      onClick={copyCode}
+                      className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--text-dim)]"
                     >
-                        Flutter
+                      {copied ? <Check size={11} /> : <Copy size={11} />}
+                      {copied ? 'Copied' : 'Copy'}
                     </button>
+                  </div>
                 </div>
 
-                {/* Actions */}
-                <div style={{ display: 'flex', gap: '8px' }}>
-                    <motion.button
-                        onClick={handleRun}
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            padding: '8px 16px',
-                            borderRadius: '8px',
-                            background: 'linear-gradient(135deg, #10b981, #059669)',
-                            border: 'none',
-                            color: 'white',
-                            fontSize: '13px',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            boxShadow: '0 4px 15px rgba(16, 185, 129, 0.3)'
-                        }}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                <textarea
+                  value={code}
+                  readOnly
+                  spellCheck={false}
+                  className="h-[380px] w-full resize-none rounded-xl border border-white/10 bg-slate-950/70 p-3 font-mono text-xs leading-6 text-slate-200 outline-none"
+                />
+              </div>
+
+              <div className="mt-3 rounded-2xl border border-white/10 bg-slate-950/50 p-3">
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--text-muted)]">Console</p>
+                <div className="max-h-28 space-y-1 overflow-auto pr-1">
+                  {logs.map((line, index) => (
+                    <p key={`${line}-${index}`} className="font-mono text-xs text-[var(--text-dim)]">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="glass rounded-3xl p-4 md:p-5">
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { id: 'phone', icon: Smartphone },
+                    { id: 'tablet', icon: Tablet },
+                    { id: 'desktop', icon: Monitor },
+                  ].map(({ id, icon: Icon }) => (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setDevice(id as Device)}
+                      className={`rounded-full border p-2 ${
+                        device === id
+                          ? 'border-cyan-300/70 bg-cyan-300/20 text-cyan-100'
+                          : 'border-white/20 bg-white/5 text-[var(--text-dim)]'
+                      }`}
                     >
-                        <Play size={14} />
-                        Run
-                    </motion.button>
+                      <Icon size={14} />
+                    </button>
+                  ))}
                 </div>
-            </header>
 
-            {/* Main Content */}
-            <div style={{
-                flex: 1,
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '0'
-            }}>
-                {/* Code Editor Panel */}
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    borderRight: '1px solid rgba(139, 92, 246, 0.15)'
-                }}>
-                    {/* Editor Header */}
-                    <div style={{
-                        padding: '12px 16px',
-                        borderBottom: '1px solid rgba(139, 92, 246, 0.1)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        background: 'rgba(13, 13, 26, 0.5)'
-                    }}>
-                        <div style={{ display: 'flex', gap: '8px' }}>
-                            {['button', 'card', 'animation'].map((t) => (
-                                <button
-                                    key={t}
-                                    onClick={() => setTemplate(t)}
-                                    style={{
-                                        padding: '6px 12px',
-                                        borderRadius: '6px',
-                                        fontSize: '12px',
-                                        fontWeight: 500,
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        background: template === t ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
-                                        color: template === t ? '#a78bfa' : '#52525b',
-                                        textTransform: 'capitalize'
-                                    }}
-                                >
-                                    {t}
-                                </button>
-                            ))}
-                        </div>
-                        <div style={{ display: 'flex', gap: '8px' }}>
-                            <motion.button
-                                onClick={handleReset}
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '4px',
-                                    padding: '6px 10px',
-                                    borderRadius: '6px',
-                                    background: 'rgba(139, 92, 246, 0.1)',
-                                    border: 'none',
-                                    color: '#a78bfa',
-                                    fontSize: '12px',
-                                    cursor: 'pointer'
-                                }}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                            >
-                                <RotateCcw size={12} />
-                                Reset
-                            </motion.button>
-                            <motion.button
-                                onClick={handleCopy}
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '4px',
-                                    padding: '6px 10px',
-                                    borderRadius: '6px',
-                                    background: copied ? 'rgba(34, 197, 94, 0.2)' : 'rgba(139, 92, 246, 0.1)',
-                                    border: 'none',
-                                    color: copied ? '#22c55e' : '#a78bfa',
-                                    fontSize: '12px',
-                                    cursor: 'pointer'
-                                }}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                            >
-                                {copied ? <Check size={12} /> : <Copy size={12} />}
-                                {copied ? 'Copied' : 'Copy'}
-                            </motion.button>
-                        </div>
-                    </div>
+                <button type="button" onClick={runPreview} className="btn-solid text-xs uppercase tracking-[0.08em]">
+                  <Play size={12} />
+                  Run
+                </button>
+              </div>
 
-                    {/* Code Editor */}
-                    <div style={{ flex: 1, position: 'relative' }}>
-                        <textarea
-                            value={code}
-                            onChange={(e) => setCode(e.target.value)}
-                            spellCheck={false}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                padding: '20px',
-                                background: 'rgba(0, 0, 0, 0.3)',
-                                border: 'none',
-                                color: '#e4e4e7',
-                                fontSize: '13px',
-                                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                                lineHeight: 1.6,
-                                resize: 'none',
-                                outline: 'none'
-                            }}
-                        />
-                        {/* Line Numbers Overlay Hint */}
-                        <div style={{
-                            position: 'absolute',
-                            bottom: '12px',
-                            right: '12px',
-                            fontSize: '11px',
-                            color: '#3f3f46',
-                            background: 'rgba(13, 13, 26, 0.8)',
-                            padding: '4px 8px',
-                            borderRadius: '4px'
-                        }}>
-                            {platform === 'react-native' ? 'TypeScript' : 'Dart'}
-                        </div>
-                    </div>
-
-                    {/* Console */}
-                    <div style={{
-                        height: '120px',
-                        borderTop: '1px solid rgba(139, 92, 246, 0.1)',
-                        background: 'rgba(0, 0, 0, 0.4)',
-                        padding: '12px 16px',
-                        overflow: 'auto'
-                    }}>
-                        <div style={{ fontSize: '11px', color: '#52525b', marginBottom: '8px', fontWeight: 600 }}>CONSOLE</div>
-                        {logs.map((log, i) => (
-                            <div key={i} style={{ fontSize: '12px', color: '#71717a', marginBottom: '4px', fontFamily: 'monospace' }}>
-                                {log}
+              <div className="flex min-h-[470px] items-center justify-center rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+                <motion.div
+                  key={`${device}-${running}-${template}`}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  style={{
+                    width: deviceSize[device].width,
+                    height: deviceSize[device].height,
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                  }}
+                >
+                  <div
+                    className={`h-full w-full overflow-hidden ${
+                      device === 'desktop'
+                        ? 'rounded-2xl border border-white/20'
+                        : 'phone-shell rounded-[2rem] border border-white/20 p-2'
+                    }`}
+                  >
+                    <div className="flex h-full w-full items-center justify-center rounded-[1.5rem] bg-[linear-gradient(180deg,rgba(10,18,35,0.95),rgba(6,12,24,0.98))] p-4">
+                      {running ? (
+                        <div className="text-center">
+                          {template === 'button' && (
+                            <button className="btn-solid" onClick={() => setLogs((prev) => [...prev, '> Button pressed'])}>
+                              Pay now
+                            </button>
+                          )}
+                          {template === 'card' && (
+                            <div className="glass w-56 rounded-2xl p-4 text-left">
+                              <div className="mb-3 h-8 w-8 rounded-lg bg-cyan-300/80" />
+                              <p className="font-display text-xl font-semibold text-white">Member tier</p>
+                              <p className="mt-1 text-xs text-[var(--text-dim)]">Gold account active</p>
                             </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Preview Panel */}
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    background: 'rgba(13, 13, 26, 0.3)'
-                }}>
-                    {/* Preview Header */}
-                    <div style={{
-                        padding: '12px 16px',
-                        borderBottom: '1px solid rgba(139, 92, 246, 0.1)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        background: 'rgba(13, 13, 26, 0.5)'
-                    }}>
-                        <span style={{ fontSize: '13px', fontWeight: 600, color: 'white' }}>Live Preview</span>
-                        <div style={{ display: 'flex', gap: '4px' }}>
-                            {[
-                                { type: 'phone' as DeviceType, icon: Smartphone },
-                                { type: 'tablet' as DeviceType, icon: Tablet },
-                                { type: 'desktop' as DeviceType, icon: Monitor }
-                            ].map(({ type, icon: Icon }) => (
-                                <button
-                                    key={type}
-                                    onClick={() => setDevice(type)}
-                                    style={{
-                                        padding: '6px 8px',
-                                        borderRadius: '6px',
-                                        background: device === type ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
-                                        border: 'none',
-                                        color: device === type ? '#a78bfa' : '#52525b',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    <Icon size={16} />
-                                </button>
-                            ))}
+                          )}
+                          {template === 'animation' && (
+                            <>
+                              <p className="font-display text-2xl font-semibold text-white">Motion Preview</p>
+                              <motion.div
+                                className="mx-auto mt-5 h-14 w-14 rounded-2xl"
+                                style={{ background: 'linear-gradient(135deg, #38bdf8 0%, #f8fbff 100%)' }}
+                                animate={{ y: [0, -18, 0] }}
+                                transition={{ duration: 1, repeat: Infinity }}
+                              />
+                            </>
+                          )}
                         </div>
+                      ) : (
+                        <div className="flex gap-2">
+                          {[0, 1, 2].map((dot) => (
+                            <motion.span
+                              key={dot}
+                              className="h-2.5 w-2.5 rounded-full bg-cyan-300"
+                              animate={{ scale: [1, 1.35, 1], opacity: [0.45, 1, 0.45] }}
+                              transition={{ duration: 0.8, repeat: Infinity, delay: dot * 0.14 }}
+                            />
+                          ))}
+                        </div>
+                      )}
                     </div>
-
-                    {/* Preview Area */}
-                    <div style={{
-                        flex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '24px',
-                        background: 'radial-gradient(circle at center, rgba(139, 92, 246, 0.05) 0%, transparent 70%)'
-                    }}>
-                        <motion.div
-                            key={`${device}-${isRunning}`}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            style={{
-                                width: deviceSizes[device].width,
-                                height: deviceSizes[device].height,
-                                maxWidth: '100%',
-                                maxHeight: '100%',
-                                borderRadius: device === 'phone' ? '40px' : device === 'tablet' ? '24px' : '12px',
-                                background: '#000000',
-                                border: device !== 'desktop' ? '8px solid #1a1a2e' : '2px solid rgba(139, 92, 246, 0.2)',
-                                overflow: 'hidden',
-                                position: 'relative',
-                                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)'
-                            }}
-                        >
-                            {/* Device Notch (for phone) */}
-                            {device === 'phone' && (
-                                <div style={{
-                                    position: 'absolute',
-                                    top: '0',
-                                    left: '50%',
-                                    transform: 'translateX(-50%)',
-                                    width: '120px',
-                                    height: '28px',
-                                    background: '#1a1a2e',
-                                    borderRadius: '0 0 16px 16px',
-                                    zIndex: 10
-                                }} />
-                            )}
-
-                            {/* Preview Content */}
-                            <div style={{
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                background: '#060010'
-                            }}>
-                                {isRunning ? (
-                                    <div style={{ textAlign: 'center' }}>
-                                        {/* Simulated Preview */}
-                                        {template === 'button' && (
-                                            <motion.button
-                                                style={{
-                                                    padding: '14px 28px',
-                                                    background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
-                                                    color: 'white',
-                                                    borderRadius: '12px',
-                                                    border: 'none',
-                                                    fontWeight: 600,
-                                                    fontSize: '14px',
-                                                    cursor: 'pointer',
-                                                    boxShadow: '0 4px 20px rgba(139, 92, 246, 0.4)'
-                                                }}
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
-                                                onClick={() => setLogs(prev => [...prev, '> Button pressed!'])}
-                                            >
-                                                Click Me
-                                            </motion.button>
-                                        )}
-                                        {template === 'card' && (
-                                            <motion.div
-                                                style={{
-                                                    width: '200px',
-                                                    padding: '20px',
-                                                    background: 'linear-gradient(135deg, rgba(34, 211, 238, 0.15), rgba(34, 211, 238, 0.05))',
-                                                    borderRadius: '16px',
-                                                    border: '1px solid rgba(34, 211, 238, 0.3)'
-                                                }}
-                                                whileHover={{ scale: 1.02 }}
-                                            >
-                                                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#22d3ee', marginBottom: '16px' }} />
-                                                <div style={{ fontSize: '16px', fontWeight: 600, color: 'white', marginBottom: '6px' }}>Welcome</div>
-                                                <div style={{ fontSize: '13px', color: '#71717a' }}>This is an interactive card</div>
-                                            </motion.div>
-                                        )}
-                                        {template === 'animation' && (
-                                            <div>
-                                                <motion.div
-                                                    initial={{ opacity: 0, y: 20 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ duration: 0.6 }}
-                                                >
-                                                    <div style={{ fontSize: '20px', color: 'white', marginBottom: '24px' }}>Hello World!</div>
-                                                </motion.div>
-                                                <motion.div
-                                                    style={{
-                                                        width: '60px',
-                                                        height: '60px',
-                                                        borderRadius: '50%',
-                                                        background: '#8b5cf6',
-                                                        margin: '0 auto'
-                                                    }}
-                                                    animate={{ y: [0, -20, 0] }}
-                                                    transition={{ duration: 1, repeat: Infinity }}
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <div style={{ display: 'flex', gap: '8px' }}>
-                                        {[0, 1, 2].map((i) => (
-                                            <motion.div
-                                                key={i}
-                                                style={{
-                                                    width: '12px',
-                                                    height: '12px',
-                                                    borderRadius: '50%',
-                                                    background: '#8b5cf6'
-                                                }}
-                                                animate={{ scale: [1, 1.3, 1], opacity: [1, 0.5, 1] }}
-                                                transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.2 }}
-                                            />
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            </div>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+          </div>
         </div>
-    );
+      </section>
+
+      <Footer />
+    </main>
+  );
 }
+

@@ -1,216 +1,91 @@
-'use client';
+﻿'use client';
 
-import { motion, Variants } from 'framer-motion';
-import {
-    Layers,
-    Zap,
-    Palette,
-    Gauge,
-    Smartphone,
-    Code2
-} from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Bolt, Brush, Fingerprint, Gauge, LayoutGrid, ShieldCheck } from 'lucide-react';
 
-const features = [
-    {
-        icon: Layers,
-        title: '100+ Components',
-        description: 'Beautifully crafted UI components ready for production.',
-        color: '#10B981',
-        span: false,
-    },
-    {
-        icon: Zap,
-        title: '50+ Animations',
-        description: 'Smooth micro-interactions and stunning transitions.',
-        color: '#06B6D4',
-        span: false,
-    },
-    {
-        icon: Palette,
-        title: 'Customizable',
-        description: 'Easy to customize colors, sizes, and behaviors.',
-        color: '#F59E0B',
-        span: false,
-    },
-    {
-        icon: Gauge,
-        title: '60fps Performance',
-        description: 'Optimized for smooth, native-like experience.',
-        color: '#10B981',
-        span: false,
-    },
-    {
-        icon: Smartphone,
-        title: 'Cross Platform',
-        description: 'Works on React Native & Flutter seamlessly.',
-        color: '#06B6D4',
-        span: false,
-    },
-    {
-        icon: Code2,
-        title: 'TypeScript',
-        description: 'Full type safety and amazing DX.',
-        color: '#22D3EE',
-        span: false,
-    }
+const items = [
+  {
+    title: 'Reusable architecture',
+    text: 'Compose screens quickly with cards, toggles, inputs, and list primitives.',
+    icon: LayoutGrid,
+    color: '#38bdf8',
+  },
+  {
+    title: 'Smooth interactions',
+    text: 'Motion defaults are tuned for touch devices and low-jank transitions.',
+    icon: Bolt,
+    color: '#0ea5e9',
+  },
+  {
+    title: 'Gesture-aware',
+    text: 'Swipe, drag, and dismiss patterns are included and production-safe.',
+    icon: Fingerprint,
+    color: '#60a5fa',
+  },
+  {
+    title: 'High readability',
+    text: 'Visual hierarchy and spacing prioritize clarity on small screens.',
+    icon: Brush,
+    color: '#93c5fd',
+  },
+  {
+    title: 'Performance targets',
+    text: 'Examples are designed to hold 60fps on modern mobile hardware.',
+    icon: Gauge,
+    color: '#38bdf8',
+  },
+  {
+    title: 'Shipping guardrails',
+    text: 'Patterns include defaults for status states and accessibility basics.',
+    icon: ShieldCheck,
+    color: '#bfdbfe',
+  },
 ];
 
-const container: Variants = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.08,
-            delayChildren: 0.1
-        }
-    }
-};
-
-const item: Variants = {
-    hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
-    show: {
-        opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
-    }
-};
-
 export default function Features() {
-    return (
-        <section
-            id="features"
-            style={{
-                padding: '120px 0',
-                position: 'relative',
-                background: '#050505'
-            }}
+  return (
+    <section className="ui-section">
+      <div className="ui-container">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.4 }}
+          className="mb-7"
         >
-            <div className="dot-grid" style={{ position: 'absolute', inset: 0, opacity: 0.3 }} />
+          <span className="section-kicker">Why this rebuild</span>
+          <h2 className="section-title mt-4">A complete UI foundation for mobile products</h2>
+          <p className="section-subtitle mt-4 max-w-3xl">
+            This rebuild focuses on practical quality: cleaner structure, stronger readability, and
+            faster implementation paths.
+          </p>
+        </motion.div>
 
-            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 10 }}>
-                {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ textAlign: 'center', marginBottom: '80px' }}
-                >
-                    <motion.span
-                        style={{
-                            display: 'inline-block',
-                            padding: '8px 16px',
-                            borderRadius: '100px',
-                            background: 'rgba(16, 185, 129, 0.08)',
-                            border: '1px solid rgba(16, 185, 129, 0.2)',
-                            fontSize: '13px',
-                            color: '#34D399',
-                            fontWeight: 500,
-                            marginBottom: '24px',
-                        }}
-                    >
-                        ✦ Features
-                    </motion.span>
-                    <h2 className="font-display" style={{
-                        fontSize: 'clamp(36px, 5vw, 54px)',
-                        fontWeight: 700,
-                        marginBottom: '20px',
-                        color: '#F0F0F5',
-                        letterSpacing: '-0.03em'
-                    }}>
-                        Everything you need
-                    </h2>
-                    <p style={{
-                        fontSize: '17px',
-                        color: '#6B7280',
-                        maxWidth: '480px',
-                        margin: '0 auto',
-                        lineHeight: 1.7
-                    }}>
-                        A complete toolkit for building world-class mobile applications with ease.
-                    </p>
-                </motion.div>
-
-                {/* Features Grid */}
-                <motion.div
-                    variants={container}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                        gap: '16px'
-                    }}
-                >
-                    {features.map((feature) => (
-                        <motion.div
-                            key={feature.title}
-                            variants={item}
-                            whileHover={{
-                                y: -4,
-                                borderColor: `${feature.color}33`,
-                            }}
-                            style={{
-                                padding: '32px',
-                                borderRadius: '24px',
-                                background: 'linear-gradient(145deg, rgba(17, 17, 24, 0.7), rgba(10, 10, 15, 0.85))',
-                                border: '1px solid rgba(255, 255, 255, 0.05)',
-                                cursor: 'pointer',
-                                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                                position: 'relative',
-                                overflow: 'hidden',
-                            }}
-                        >
-                            {/* Hover glow */}
-                            <div style={{
-                                position: 'absolute',
-                                top: '-20px',
-                                left: '-20px',
-                                width: '100px',
-                                height: '100px',
-                                borderRadius: '50%',
-                                background: feature.color,
-                                opacity: 0.06,
-                                filter: 'blur(40px)',
-                                pointerEvents: 'none',
-                            }} />
-
-                            <motion.div
-                                style={{
-                                    width: '52px',
-                                    height: '52px',
-                                    borderRadius: '14px',
-                                    background: `linear-gradient(135deg, ${feature.color}20, ${feature.color}10)`,
-                                    border: `1px solid ${feature.color}30`,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    marginBottom: '24px',
-                                    position: 'relative',
-                                }}
-                                whileHover={{ scale: 1.05, rotate: 5 }}
-                                transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                            >
-                                <feature.icon style={{ width: '26px', height: '26px', color: feature.color }} />
-                            </motion.div>
-                            <h3 style={{
-                                fontSize: '18px',
-                                fontWeight: 600,
-                                color: '#F0F0F5',
-                                marginBottom: '10px',
-                                letterSpacing: '-0.01em'
-                            }}>{feature.title}</h3>
-                            <p style={{
-                                fontSize: '14px',
-                                color: '#6B7280',
-                                lineHeight: 1.6
-                            }}>{feature.description}</p>
-                        </motion.div>
-                    ))}
-                </motion.div>
-            </div>
-        </section>
-    );
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((item, index) => (
+            <motion.article
+              key={item.title}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.38, delay: index * 0.04 }}
+              className="glass rounded-2xl p-4 md:p-5"
+            >
+              <span
+                className="mb-3 inline-flex rounded-xl border p-2"
+                style={{
+                  borderColor: `${item.color}66`,
+                  background: `${item.color}2A`,
+                }}
+              >
+                <item.icon size={16} color={item.color} />
+              </span>
+              <h3 className="font-display text-lg font-semibold text-white">{item.title}</h3>
+              <p className="mt-2 text-sm leading-7 text-[var(--text-dim)]">{item.text}</p>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

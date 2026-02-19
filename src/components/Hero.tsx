@@ -1,270 +1,134 @@
-'use client';
+﻿'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Play, Star, Download, Layers, Copy, Check } from 'lucide-react';
-import { useRef, useState } from 'react';
 import Link from 'next/link';
-import ColorBends from './ColorBends';
+import { motion } from 'framer-motion';
+import { ArrowRight, CheckCircle2, Smartphone } from 'lucide-react';
+
+const qualityPoints = ['Phone-first spacing', 'Accessible contrast', 'Cross-platform snippets'];
+const kpis = [
+  { label: 'Components', value: '12+' },
+  { label: 'Animations', value: '12+' },
+  { label: 'Dual API', value: 'RN + Flutter' },
+  { label: 'Performance', value: '60fps ready' },
+];
 
 export default function Hero() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start start", "end start"]
-    });
+  return (
+    <section className="ui-section pt-28 md:pt-32">
+      <div className="ui-container">
+        <div className="grid min-h-[calc(100vh-110px)] items-center gap-10 lg:grid-cols-[1.02fr_0.98fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="max-w-2xl"
+          >
+            <span className="section-kicker">
+              <Smartphone size={13} />
+              Mobile UI Toolkit
+            </span>
 
-    const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+            <h1 className="section-title mt-5">
+              Build premium mobile UI with
+              <span className="text-gradient-cyan"> React Native + Flutter</span>
+            </h1>
 
-    return (
-        <section
-            ref={containerRef}
-            className="mesh-gradient"
-            style={{
-                position: 'relative',
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden',
-            }}
-        >
-            {/* Dot Grid */}
-            <div className="dot-grid" style={{
-                position: 'absolute',
-                inset: 0,
-                opacity: 0.5,
-                pointerEvents: 'none'
-            }} />
+            <p className="section-subtitle mt-5 max-w-xl">
+              Complete redesign with cleaner spacing, stronger readability, and a richer set of
+              reusable components and motion patterns for both ecosystems.
+            </p>
 
-            {/* ColorBends Background */}
-            <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: 0,
-            }}>
-                <ColorBends
-                    rotation={45}
-                    speed={0.2}
-                    colors={["#5227FF", "#FF9FFC", "#7cff67"]}
-                    transparent
-                    autoRotate={0}
-                    scale={1}
-                    frequency={1}
-                    warpStrength={1}
-                    mouseInfluence={1}
-                    parallax={0.5}
-                    noise={0.1}
-                />
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/components"
+                className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold"
+                style={{
+                  color: '#061523',
+                  background: 'linear-gradient(135deg, #38bdf8 0%, #f8fbff 100%)',
+                }}
+              >
+                Browse Components
+                <ArrowRight size={15} />
+              </Link>
+
+              <Link
+                href="/animations"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-[var(--text-primary)] transition hover:border-[var(--border-strong)] hover:bg-white/10"
+              >
+                Explore Animations
+              </Link>
             </div>
 
-            <motion.div
-                style={{
-                    maxWidth: '1000px',
-                    margin: '0 auto',
-                    padding: '120px 20px 80px',
-                    position: 'relative',
-                    zIndex: 10,
-                    textAlign: 'center',
-                    opacity,
-                    scale,
-                    pointerEvents: 'none',
-                    width: '100%',
-                }}
-            >
-                {/* Badge */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            <div className="mt-7 flex flex-wrap gap-2">
+              {qualityPoints.map((item) => (
+                <span
+                  key={item}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-[var(--text-secondary)]"
                 >
-                    <motion.div
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            padding: '8px 18px',
-                            borderRadius: '100px',
-                            background: 'rgba(16, 185, 129, 0.08)',
-                            border: '1px solid rgba(16, 185, 129, 0.2)',
-                            marginBottom: '32px',
-                            pointerEvents: 'auto'
-                        }}
-                        whileHover={{
-                            borderColor: 'rgba(16, 185, 129, 0.35)',
-                            background: 'rgba(16, 185, 129, 0.12)'
-                        }}
-                    >
-                        <motion.span
-                            style={{
-                                width: '8px',
-                                height: '8px',
-                                borderRadius: '50%',
-                                background: 'linear-gradient(135deg, #10B981, #06B6D4)'
-                            }}
-                            animate={{ opacity: [1, 0.4, 1] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                        />
-                        <span style={{ fontSize: '13px', color: '#34D399', fontWeight: 500 }}>
-                            v2.0 — Now with React Native & Flutter
-                        </span>
-                    </motion.div>
-                </motion.div>
+                  <CheckCircle2 size={13} color="#38bdf8" />
+                  {item}
+                </span>
+              ))}
+            </div>
 
-                {/* Main Heading */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                    className="font-display"
-                    style={{
-                        fontSize: 'clamp(36px, 9vw, 82px)',
-                        fontWeight: 700,
-                        lineHeight: 1.05,
-                        marginBottom: '28px',
-                        letterSpacing: '-0.04em',
-                    }}
-                >
-                    <span style={{ color: '#F0F0F5' }}>Build beautiful</span>
-                    <br />
-                    <span className="text-gradient">mobile interfaces</span>
-                </motion.h1>
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {kpis.map((stat) => (
+                <article key={stat.label} className="glass-panel rounded-2xl p-3">
+                  <p className="text-sm font-semibold text-[var(--text-primary)]">{stat.value}</p>
+                  <p className="mt-0.5 text-xs text-[var(--text-muted)]">{stat.label}</p>
+                </article>
+              ))}
+            </div>
+          </motion.div>
 
-                {/* Subtitle */}
-                <motion.p
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    style={{
-                        fontSize: 'clamp(14px, 4vw, 18px)',
-                        color: '#6B7280',
-                        maxWidth: '560px',
-                        margin: '0 auto 48px',
-                        lineHeight: 1.8,
-                        padding: '0 16px',
-                    }}
-                >
-                    An open-source collection of premium animated components
-                    for building world-class mobile applications.
-                </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 18, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mx-auto w-full max-w-[540px]"
+          >
+            <div className="glass-panel-strong rounded-3xl p-4 md:p-5">
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">Preview</p>
+                  <p className="font-display text-2xl font-semibold text-white">Mobile Dashboard</p>
+                </div>
+                <span className="rounded-full border border-[rgba(48,213,255,0.35)] bg-[rgba(48,213,255,0.16)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9bf3ff]">
+                  Live
+                </span>
+              </div>
 
-                {/* CTA Buttons */}
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    style={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        justifyContent: 'center',
-                        gap: '16px',
-                        pointerEvents: 'auto',
-                        padding: '0 16px',
-                        marginBottom: '56px',
-                    }}
-                >
-                    <Link href="/docs">
-                        <motion.button
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '10px',
-                                background: 'linear-gradient(135deg, #10B981 0%, #06B6D4 100%)',
-                                color: '#FFFFFF',
-                                padding: '16px 32px',
-                                borderRadius: '14px',
-                                fontSize: '15px',
-                                fontWeight: 600,
-                                border: 'none',
-                                cursor: 'pointer',
-                            }}
-                            whileHover={{
-                                scale: 1.02,
-                                boxShadow: '0 0 50px rgba(16, 185, 129, 0.35)'
-                            }}
-                            whileTap={{ scale: 0.98 }}
-                            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                        >
-                            Get Started
-                            <ArrowRight style={{ width: '18px', height: '18px' }} />
-                        </motion.button>
-                    </Link>
-                    <Link href="/components">
-                        <motion.button
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '10px',
-                                background: 'rgba(16, 185, 129, 0.08)',
-                                color: '#F0F0F5',
-                                padding: '16px 32px',
-                                borderRadius: '14px',
-                                fontSize: '15px',
-                                fontWeight: 600,
-                                border: '1px solid rgba(16, 185, 129, 0.2)',
-                                cursor: 'pointer',
-                            }}
-                            whileHover={{
-                                background: 'rgba(16, 185, 129, 0.12)',
-                                borderColor: 'rgba(16, 185, 129, 0.35)'
-                            }}
-                            whileTap={{ scale: 0.98 }}
-                            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                        >
-                            Browse Components
-                        </motion.button>
-                    </Link>
-                </motion.div>
+              <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+                <p className="text-xs uppercase tracking-[0.08em] text-[var(--text-muted)]">Weekly active users</p>
+                <div className="mt-2 flex items-end justify-between">
+                  <p className="font-display text-4xl font-semibold text-white">184,320</p>
+                  <p className="text-sm font-semibold text-[#dff3ff]">+12.3%</p>
+                </div>
+                <div className="mt-4 h-2 rounded-full bg-white/10">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: '72%' }}
+                    transition={{ duration: 1.1, delay: 0.2, ease: 'easeOut' }}
+                    className="h-2 rounded-full"
+                    style={{ background: 'linear-gradient(90deg, #38bdf8 0%, #f8fbff 100%)' }}
+                  />
+                </div>
+              </div>
 
-                {/* Stats Bar */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    style={{
-                        display: 'inline-flex',
-                        gap: '32px',
-                        padding: '16px 32px',
-                        borderRadius: '100px',
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.06)',
-                        pointerEvents: 'auto',
-                    }}
-                >
-                    {[
-                        { icon: Star, label: '2.4k Stars', color: '#F59E0B' },
-                        { icon: Download, label: '50k+ Downloads', color: '#10B981' },
-                        { icon: Layers, label: '150+ Components', color: '#06B6D4' },
-                    ].map((stat) => (
-                        <div key={stat.label} style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            fontSize: '13px',
-                            color: '#9CA3AF',
-                            fontWeight: 500,
-                        }}>
-                            <stat.icon size={14} style={{ color: stat.color }} />
-                            <span>{stat.label}</span>
-                        </div>
-                    ))}
-                </motion.div>
-
-            </motion.div>
-
-            {/* Bottom Gradient Line */}
-            <div style={{
-                position: 'absolute',
-                bottom: 0,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '60%',
-                height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent)'
-            }} />
-        </section>
-    );
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <article className="glass-panel rounded-xl p-3">
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)]">Crash free</p>
+                  <p className="mt-1 text-xl font-semibold text-white">99.94%</p>
+                </article>
+                <article className="glass-panel rounded-xl p-3">
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)]">Frame time</p>
+                  <p className="mt-1 text-xl font-semibold text-white">16.2ms</p>
+                </article>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
 }

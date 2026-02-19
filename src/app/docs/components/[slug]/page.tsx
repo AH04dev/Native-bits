@@ -1,234 +1,174 @@
-'use client';
+﻿'use client';
 
-import { motion } from 'framer-motion';
-import { Copy, Check, ArrowLeft, Package } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Check, Copy, Package2 } from 'lucide-react';
+import { Footer, Navbar } from '@/components';
 import { getRegistryItem } from '@/registry';
+import { useParams } from 'next/navigation';
+import {
+  SHADCN_REGISTRY_NAMESPACE,
+  shadcnRegistryCatalog,
+} from '@/lib/shadcn-registry-catalog';
 
 export default function ComponentDocPage() {
-    const params = useParams();
-    const slug = params.slug as string;
-    const item = getRegistryItem(slug);
-    const [code, setCode] = useState('');
-    const [copied, setCopied] = useState(false);
-    const [copiedInstall, setCopiedInstall] = useState(false);
+  const params = useParams();
+  const slug = params.slug as string;
+  const found = getRegistryItem(slug);
+  const item = found?.category === 'component' ? found : undefined;
+  const installCommand = shadcnRegistryCatalog.some((entry) => entry.name === slug)
+    ? `npx shadcn@latest add ${SHADCN_REGISTRY_NAMESPACE}/${slug}`
+    : `npx native-bits add ${slug}`;
 
-    useEffect(() => {
-        if (item) {
-            fetch(`/api/registry/${item.file}`)
-                .then(r => r.text())
-                .then(setCode)
-                .catch(() => setCode('// Source code could not be loaded'));
-        }
-    }, [item]);
+  const [code, setCode] = useState('');
+  const [copiedInstall, setCopiedInstall] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(code);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+  useEffect(() => {
+    if (!item) return;
 
-    const handleCopyInstall = () => {
-        navigator.clipboard.writeText(`npx native-bits add ${slug}`);
-        setCopiedInstall(true);
-        setTimeout(() => setCopiedInstall(false), 2000);
-    };
+    fetch(`/api/registry/${item.file}`)
+      .then((response) => response.text())
+      .then(setCode)
+      .catch(() => setCode('// Source could not be loaded'));
+  }, [item]);
 
-    if (!item) {
-        return (
-            <div style={{ minHeight: '100vh', background: '#050505', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ textAlign: 'center' }}>
-                    <h1 style={{ color: '#F0F0F5', fontSize: '24px', marginBottom: '12px' }}>Component not found</h1>
-                    <Link href="/docs" style={{ color: '#34D399', textDecoration: 'none' }}>← Back to docs</Link>
-                </div>
-            </div>
-        );
-    }
+  const copyInstall = async () => {
+    await navigator.clipboard.writeText(installCommand);
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 1600);
+  };
 
+  const copySource = async () => {
+    await navigator.clipboard.writeText(code);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 1600);
+  };
+
+  if (!item) {
     return (
-        <div style={{ minHeight: '100vh', background: '#050505', paddingTop: '100px' }}>
-            <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 24px' }}>
-
-                {/* Back Link */}
-                <Link href="/docs" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#6B7280', textDecoration: 'none', fontSize: '14px', marginBottom: '32px' }}>
-                    <ArrowLeft size={14} /> Back to docs
-                </Link>
-
-                {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    style={{ marginBottom: '40px' }}
-                >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-                        <span style={{
-                            padding: '6px 12px',
-                            borderRadius: '8px',
-                            background: 'rgba(16, 185, 129, 0.06)',
-                            border: '1px solid rgba(16, 185, 129, 0.15)',
-                            fontSize: '12px',
-                            color: '#34D399',
-                            fontWeight: 500,
-                        }}>
-                            Component
-                        </span>
-                    </div>
-                    <h1 className="font-display" style={{ fontSize: '40px', fontWeight: 700, color: '#F0F0F5', letterSpacing: '-0.02em', marginBottom: '12px' }}>
-                        {item.name}
-                    </h1>
-                    <p style={{ fontSize: '17px', color: '#6B7280', lineHeight: 1.7, maxWidth: '600px' }}>
-                        {item.description}
-                    </p>
-                </motion.div>
-
-                {/* Install Command */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    style={{ marginBottom: '40px' }}
-                >
-                    <h2 className="font-display" style={{ fontSize: '18px', fontWeight: 600, color: '#F0F0F5', marginBottom: '12px' }}>Installation</h2>
-                    <motion.button
-                        onClick={handleCopyInstall}
-                        whileTap={{ scale: 0.98 }}
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '12px',
-                            padding: '14px 20px',
-                            borderRadius: '12px',
-                            background: 'rgba(0, 0, 0, 0.4)',
-                            border: '1px solid rgba(16, 185, 129, 0.1)',
-                            color: '#9CA3AF',
-                            fontSize: '14px',
-                            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                            cursor: 'pointer',
-                            width: '100%',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <span><span style={{ color: '#6B7280' }}>$</span> npx native-bits add {slug}</span>
-                        {copiedInstall ? <Check size={14} color="#10B981" /> : <Copy size={14} color="#6B7280" />}
-                    </motion.button>
-
-                    {item.dependencies.length > 0 && (
-                        <div style={{ marginTop: '12px' }}>
-                            <span style={{ fontSize: '12px', color: '#6B7280' }}>Requires: </span>
-                            {item.dependencies.map(dep => (
-                                <span key={dep} style={{
-                                    padding: '3px 8px',
-                                    borderRadius: '6px',
-                                    background: 'rgba(16, 185, 129, 0.06)',
-                                    fontSize: '11px',
-                                    color: '#34D399',
-                                    fontFamily: 'ui-monospace, monospace',
-                                    marginLeft: '6px',
-                                }}>{dep}</span>
-                            ))}
-                        </div>
-                    )}
-                </motion.div>
-
-                {/* Props Table */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    style={{ marginBottom: '40px' }}
-                >
-                    <h2 className="font-display" style={{ fontSize: '18px', fontWeight: 600, color: '#F0F0F5', marginBottom: '16px' }}>Props</h2>
-                    <div style={{
-                        borderRadius: '16px',
-                        border: '1px solid rgba(255, 255, 255, 0.05)',
-                        overflow: 'hidden',
-                    }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                            <thead>
-                                <tr style={{ background: 'rgba(255, 255, 255, 0.02)' }}>
-                                    {['Prop', 'Type', 'Default', 'Description'].map(h => (
-                                        <th key={h} style={{
-                                            padding: '12px 16px',
-                                            textAlign: 'left',
-                                            fontSize: '12px',
-                                            fontWeight: 600,
-                                            color: '#6B7280',
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '0.05em',
-                                            borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-                                        }}>{h}</th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {item.props.map((prop, i) => (
-                                    <tr key={prop.name} style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.1)' }}>
-                                        <td style={{ padding: '12px 16px', fontSize: '13px', fontWeight: 600, color: '#F0F0F5', fontFamily: 'ui-monospace, monospace' }}>{prop.name}</td>
-                                        <td style={{ padding: '12px 16px', fontSize: '12px', color: '#06B6D4', fontFamily: 'ui-monospace, monospace' }}>{prop.type}</td>
-                                        <td style={{ padding: '12px 16px', fontSize: '12px', color: '#9CA3AF', fontFamily: 'ui-monospace, monospace' }}>{prop.default || '—'}</td>
-                                        <td style={{ padding: '12px 16px', fontSize: '13px', color: '#9CA3AF' }}>{prop.description}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </motion.div>
-
-                {/* Source Code */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                    style={{ marginBottom: '100px' }}
-                >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                        <h2 className="font-display" style={{ fontSize: '18px', fontWeight: 600, color: '#F0F0F5' }}>Source Code</h2>
-                        <motion.button
-                            onClick={handleCopy}
-                            whileTap={{ scale: 0.95 }}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '8px 14px',
-                                borderRadius: '8px',
-                                background: copied ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.04)',
-                                border: 'none',
-                                color: copied ? '#10B981' : '#9CA3AF',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                            }}
-                        >
-                            {copied ? <Check size={14} /> : <Copy size={14} />}
-                            {copied ? 'Copied!' : 'Copy code'}
-                        </motion.button>
-                    </div>
-                    <div style={{
-                        borderRadius: '16px',
-                        border: '1px solid rgba(16, 185, 129, 0.08)',
-                        background: 'rgba(0, 0, 0, 0.4)',
-                        overflow: 'hidden',
-                    }}>
-                        <pre style={{
-                            margin: 0,
-                            padding: '20px',
-                            fontSize: '12px',
-                            color: '#9CA3AF',
-                            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                            whiteSpace: 'pre-wrap',
-                            lineHeight: 1.7,
-                            maxHeight: '600px',
-                            overflowY: 'auto',
-                        }}>
-                            <code>{code || 'Loading...'}</code>
-                        </pre>
-                    </div>
-                </motion.div>
-            </div>
-        </div>
+      <main>
+        <Navbar />
+        <section className="ui-section pt-28">
+          <div className="ui-container text-center">
+            <h1 className="font-display text-3xl font-semibold text-white">Component not found</h1>
+            <Link href="/docs" className="mt-4 inline-flex text-sm font-semibold text-[var(--text-dim)]">
+              Back to docs
+            </Link>
+          </div>
+        </section>
+        <Footer />
+      </main>
     );
+  }
+
+  return (
+    <main>
+      <Navbar />
+
+      <section className="ui-section pt-28">
+        <div className="ui-container max-w-5xl">
+          <Link href="/docs" className="mb-4 inline-flex items-center gap-1 text-sm text-[var(--text-dim)] hover:text-white">
+            <ArrowLeft size={14} />
+            Back to docs
+          </Link>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="glass rounded-3xl p-5 md:p-7"
+          >
+            <span className="section-kicker">
+              <Package2 size={13} />
+              Component
+            </span>
+            <h1 className="font-display mt-4 text-3xl font-semibold text-white md:text-4xl">{item.name}</h1>
+            <p className="mt-3 text-sm leading-7 text-[var(--text-dim)] md:text-base">{item.description}</p>
+
+            <div className="mt-5 grid gap-4 lg:grid-cols-2">
+              <div className="code-shell rounded-2xl p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <p className="text-xs uppercase tracking-[0.1em] text-[var(--text-muted)]">Install</p>
+                  <button
+                    type="button"
+                    onClick={copyInstall}
+                    className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--text-dim)]"
+                  >
+                    {copiedInstall ? <Check size={11} /> : <Copy size={11} />}
+                    {copiedInstall ? 'Copied' : 'Copy'}
+                  </button>
+                </div>
+                <pre className="overflow-x-auto text-xs leading-6 text-slate-200">
+                  <code>{installCommand}</code>
+                </pre>
+              </div>
+
+              <div className="glass rounded-2xl p-4">
+                <p className="text-xs uppercase tracking-[0.1em] text-[var(--text-muted)]">Dependencies</p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {item.dependencies.map((dep) => (
+                    <span key={dep} className="pill">
+                      {dep}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <section className="glass mt-6 overflow-hidden rounded-3xl">
+            <div className="border-b border-white/10 px-4 py-3 md:px-5">
+              <h2 className="font-display text-xl font-semibold text-white">Props</h2>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-left text-sm">
+                <thead className="bg-white/5 text-xs uppercase tracking-[0.1em] text-[var(--text-muted)]">
+                  <tr>
+                    <th className="px-4 py-3 md:px-5">Prop</th>
+                    <th className="px-4 py-3 md:px-5">Type</th>
+                    <th className="px-4 py-3 md:px-5">Default</th>
+                    <th className="px-4 py-3 md:px-5">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {item.props.map((prop, index) => (
+                    <tr key={prop.name} className={index % 2 === 0 ? 'bg-white/[0.02]' : 'bg-transparent'}>
+                      <td className="px-4 py-3 font-mono text-xs text-white md:px-5">{prop.name}</td>
+                      <td className="px-4 py-3 font-mono text-xs text-cyan-200 md:px-5">{prop.type}</td>
+                      <td className="px-4 py-3 font-mono text-xs text-[var(--text-dim)] md:px-5">
+                        {prop.default || '-'}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-[var(--text-dim)] md:px-5">{prop.description}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section className="code-shell mt-6 rounded-3xl p-4 md:p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="font-display text-xl font-semibold text-white">Source code</h2>
+              <button
+                type="button"
+                onClick={copySource}
+                className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--text-dim)]"
+              >
+                {copiedCode ? <Check size={11} /> : <Copy size={11} />}
+                {copiedCode ? 'Copied' : 'Copy'}
+              </button>
+            </div>
+
+            <pre className="max-h-[560px] overflow-auto rounded-2xl border border-white/10 bg-slate-950/70 p-4 text-xs leading-6 text-slate-200">
+              <code>{code || 'Loading...'}</code>
+            </pre>
+          </section>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  );
 }

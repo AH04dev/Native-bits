@@ -1,174 +1,94 @@
-'use client';
+﻿'use client';
 
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { CheckCircle2, Code2, Smartphone } from 'lucide-react';
 
-const platforms = [
-    {
-        name: 'React Native',
-        description: 'Build native iOS and Android apps with React',
-        features: ['Full TypeScript support', 'Expo compatible', 'Reanimated 3 support'],
-        code: `import { Button } from 'mobileui-pro';
-
-export default function App() {
-  return (
-    <Button onPress={handlePress}>
-      Get Started
-    </Button>
-  );
-}`,
-    },
-    {
-        name: 'Flutter',
-        description: 'Beautiful native apps in record time',
-        features: ['Dart null safety', 'Material 3 ready', 'Platform-aware'],
-        code: `import 'package:mobileui_pro/mobileui_pro.dart';
-
-class MyApp extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return MUIButton(
-      onPressed: handlePress,
-      child: Text('Get Started'),
-    );
-  }
-}`,
-    },
-];
+const rnBullets = ['Expo compatible', 'Reanimated examples', 'Type-safe props'];
+const flBullets = ['Material and Cupertino', 'Null-safe Dart API', 'Matching behavior presets'];
 
 export default function Platforms() {
-    return (
-        <section
-            style={{
-                padding: '120px 0',
-                position: 'relative',
-                background: '#000000'
-            }}
+  return (
+    <section className="ui-section">
+      <div className="ui-container">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.4 }}
+          className="mb-7 text-center"
         >
-            {/* Top line */}
-            <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)'
-            }} />
+          <span className="section-kicker">Cross platform</span>
+          <h2 className="section-title mt-4">React Native and Flutter stay aligned</h2>
+          <p className="section-subtitle mx-auto mt-4 max-w-3xl">
+            Every showcased element includes equivalent snippets and usage patterns for both
+            frameworks.
+          </p>
+        </motion.div>
 
-            <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px' }}>
-                {/* Section Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                    style={{ textAlign: 'center', marginBottom: '80px' }}
-                >
-                    <span style={{
-                        fontSize: '13px',
-                        color: '#52525b',
-                        fontWeight: 500,
-                        letterSpacing: '0.1em',
-                        textTransform: 'uppercase',
-                        display: 'block',
-                        marginBottom: '16px'
-                    }}>Platforms</span>
-                    <h2 style={{
-                        fontSize: 'clamp(32px, 5vw, 48px)',
-                        fontWeight: 600,
-                        color: '#ffffff',
-                        marginBottom: '20px',
-                        letterSpacing: '-0.02em',
-                        lineHeight: 1.1
-                    }}>
-                        One library, two platforms
-                    </h2>
-                    <p style={{
-                        fontSize: '18px',
-                        color: '#71717a',
-                        maxWidth: '500px',
-                        margin: '0 auto',
-                        lineHeight: 1.7
-                    }}>
-                        Same beautiful components, consistent APIs for both platforms.
-                    </p>
-                </motion.div>
-
-                {/* Platform Cards */}
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-                    gap: '32px'
-                }}>
-                    {platforms.map((platform, index) => (
-                        <motion.div
-                            key={platform.name}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.2, duration: 0.6 }}
-                            style={{
-                                padding: '32px',
-                                borderRadius: '20px',
-                                background: 'rgba(255,255,255,0.02)',
-                                border: '1px solid rgba(255,255,255,0.08)'
-                            }}
-                        >
-                            <div style={{ marginBottom: '24px' }}>
-                                <h3 style={{ fontSize: '24px', fontWeight: 600, color: '#ffffff', marginBottom: '8px' }}>{platform.name}</h3>
-                                <p style={{ fontSize: '15px', color: '#71717a' }}>{platform.description}</p>
-                            </div>
-
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '32px' }}>
-                                {platform.features.map((feature) => (
-                                    <div
-                                        key={feature}
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '8px'
-                                        }}
-                                    >
-                                        <div style={{
-                                            width: '16px',
-                                            height: '16px',
-                                            borderRadius: '50%',
-                                            background: 'rgba(255,255,255,0.1)',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center'
-                                        }}>
-                                            <Check style={{ width: '10px', height: '10px', color: '#ffffff' }} />
-                                        </div>
-                                        <span style={{ fontSize: '13px', color: '#a1a1aa' }}>{feature}</span>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div style={{
-                                background: 'rgba(0,0,0,0.5)',
-                                borderRadius: '12px',
-                                padding: '20px',
-                                border: '1px solid rgba(255,255,255,0.05)'
-                            }}>
-                                <div style={{ display: 'flex', gap: '6px', marginBottom: '16px' }}>
-                                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)' }} />
-                                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)' }} />
-                                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)' }} />
-                                </div>
-                                <pre style={{
-                                    margin: 0,
-                                    fontSize: '12px',
-                                    color: '#a1a1aa',
-                                    overflow: 'auto',
-                                    fontFamily: 'monospace'
-                                }}>
-                                    <code>{platform.code}</code>
-                                </pre>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <article className="glass rounded-3xl p-5 md:p-6">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="inline-flex rounded-xl border border-cyan-300/50 bg-cyan-300/20 p-2">
+                <Smartphone size={16} color="#8de2ff" />
+              </span>
+              <div>
+                <h3 className="font-display text-xl font-semibold text-white">React Native</h3>
+                <p className="text-sm text-[var(--text-dim)]">Reusable native UI patterns</p>
+              </div>
             </div>
-        </section>
-    );
+
+            <div className="space-y-2">
+              {rnBullets.map((item) => (
+                <p key={item} className="flex items-center gap-2 text-sm text-[var(--text-dim)]">
+                  <CheckCircle2 size={14} color="#38bdf8" />
+                  {item}
+                </p>
+              ))}
+            </div>
+
+            <pre className="code-shell mt-4 overflow-x-auto rounded-2xl p-3 text-xs leading-6 text-slate-200">
+              <code>{`import SegmentedControl from './native-bits/segmented-control';
+
+<SegmentedControl
+  options={['Today', 'Week', 'Month']}
+  value={range}
+  onChange={setRange}
+/>`}</code>
+            </pre>
+          </article>
+
+          <article className="glass rounded-3xl p-5 md:p-6">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="inline-flex rounded-xl border border-sky-300/50 bg-sky-300/20 p-2">
+                <Code2 size={16} color="#dff3ff" />
+              </span>
+              <div>
+                <h3 className="font-display text-xl font-semibold text-white">Flutter</h3>
+                <p className="text-sm text-[var(--text-dim)]">Equivalent widgets and motion</p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              {flBullets.map((item) => (
+                <p key={item} className="flex items-center gap-2 text-sm text-[var(--text-dim)]">
+                  <CheckCircle2 size={14} color="#60a5fa" />
+                  {item}
+                </p>
+              ))}
+            </div>
+
+            <pre className="code-shell mt-4 overflow-x-auto rounded-2xl p-3 text-xs leading-6 text-slate-200">
+              <code>{`import 'package:native_bits/native_bits.dart';
+
+SegmentedControl(
+  options: const ['Today', 'Week', 'Month'],
+  value: range,
+  onChanged: setRange,
+)`}</code>
+            </pre>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
 }

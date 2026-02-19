@@ -1,275 +1,136 @@
-'use client';
+﻿'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Github, Star, ArrowUpRight, Zap, Heart } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowUpRight, Menu, Sparkles, X } from 'lucide-react';
 
-const navLinks = [
-    { name: 'Docs', href: '/docs' },
-    { name: 'Components', href: '/components' },
-    { name: 'Animations', href: '/animations' },
-    { name: 'Sandbox', href: '/sandbox' },
+const navItems = [
+  { label: 'Components', href: '/components' },
+  { label: 'Animations', href: '/animations' },
+  { label: 'Docs', href: '/docs' },
+  { label: 'Sandbox', href: '/sandbox' },
 ];
 
 export default function Navbar() {
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-    useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-    return (
-        <motion.nav
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                zIndex: 100,
-                pointerEvents: 'none',
-                display: 'flex',
-                justifyContent: 'center',
-                paddingTop: '20px',
-            }}
+  return (
+    <>
+      <motion.header
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed left-0 right-0 top-0 z-50 px-3 pt-3 md:px-6"
+      >
+        <div
+          className="mx-auto flex w-full max-w-6xl items-center justify-between rounded-2xl border px-3 py-2.5 md:px-4"
+          style={{
+            borderColor: isScrolled ? 'rgba(56, 189, 248, 0.42)' : 'rgba(56, 189, 248, 0.28)',
+            background: isScrolled ? 'rgba(255, 255, 255, 0.94)' : 'rgba(244, 251, 255, 0.84)',
+            backdropFilter: 'blur(18px)',
+            boxShadow: isScrolled
+              ? '0 16px 34px rgba(15, 65, 110, 0.2)'
+              : '0 10px 24px rgba(15, 65, 110, 0.14)',
+          }}
         >
-            <motion.div
-                animate={{
-                    borderColor: isScrolled
-                        ? 'rgba(16, 185, 129, 0.15)'
-                        : 'rgba(255, 255, 255, 0.06)',
-                    background: isScrolled
-                        ? 'rgba(5, 5, 5, 0.85)'
-                        : 'rgba(5, 5, 5, 0.5)',
-                }}
-                transition={{ duration: 0.3 }}
-                style={{
-                    pointerEvents: 'auto',
-                    width: 'calc(100% - 32px)',
-                    maxWidth: '1000px',
-                    padding: '8px 8px 8px 24px',
-                    backdropFilter: 'blur(24px)',
-                    WebkitBackdropFilter: 'blur(24px)',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
-                    borderRadius: '100px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    boxShadow: isScrolled
-                        ? '0 8px 40px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0,0,0,0.3), 0 0 60px rgba(16, 185, 129, 0.04)'
-                        : '0 8px 32px -8px rgba(0, 0, 0, 0.5)',
-                }}
+          <Link href="/" className="flex items-center gap-2.5">
+            <span
+              className="flex h-9 w-9 items-center justify-center rounded-xl"
+              style={{
+                background:
+                  'linear-gradient(145deg, rgba(48, 213, 255, 0.3), rgba(255, 122, 89, 0.25))',
+                border: '1px solid rgba(48, 213, 255, 0.35)',
+              }}
             >
-                {/* Logo */}
-                <motion.a
-                    href="/"
-                    style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+              <Sparkles size={17} color="#9bf3ff" />
+            </span>
+            <span className="font-display text-base font-semibold text-[var(--text-primary)] md:text-lg">
+              Native Bits
+            </span>
+          </Link>
+
+          <nav className="hidden items-center gap-2 md:flex">
+            {navItems.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="rounded-full border border-sky-200/70 bg-white/75 px-3.5 py-1.5 text-sm font-medium text-[var(--text-dim)] transition hover:border-sky-300 hover:text-[var(--text)]"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="hidden items-center gap-2 md:flex">
+            <Link
+              href="/docs"
+              className="rounded-full border border-sky-200/80 bg-white/80 px-3.5 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-sky-300 hover:bg-white"
+            >
+              Install
+            </Link>
+            <Link
+              href="/components"
+              className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold"
+              style={{
+                color: '#061523',
+                background: 'linear-gradient(135deg, #38bdf8 0%, #f8fbff 100%)',
+              }}
+            >
+              Explore
+              <ArrowUpRight size={14} />
+            </Link>
+          </div>
+
+          <button
+            type="button"
+            aria-label="Toggle menu"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/20 bg-white/5 text-[var(--text-primary)] md:hidden"
+          >
+            {menuOpen ? <X size={16} /> : <Menu size={16} />}
+          </button>
+        </div>
+      </motion.header>
+
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed left-3 right-3 top-[78px] z-40 rounded-2xl border p-3 md:hidden"
+            style={{
+              background: 'rgba(255, 255, 255, 0.95)',
+              borderColor: 'rgba(56, 189, 248, 0.32)',
+              backdropFilter: 'blur(18px)',
+              boxShadow: '0 18px 42px rgba(15, 65, 110, 0.2)',
+            }}
+          >
+            <nav className="flex flex-col gap-1.5">
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-xl border border-sky-200/70 bg-white/80 px-3 py-2.5 text-sm font-medium text-[var(--text-dim)] transition hover:text-[var(--text)]"
                 >
-                    <div style={{
-                        position: 'relative',
-                        width: '32px',
-                        height: '32px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <div style={{
-                            position: 'absolute',
-                            inset: 0,
-                            borderRadius: '10px',
-                            background: 'linear-gradient(135deg, #10B981, #06B6D4)',
-                            opacity: 0.25
-                        }} />
-                        <Zap size={18} color="#10B981" fill="currentColor" />
-                    </div>
-                    <span style={{
-                        fontSize: '18px',
-                        fontWeight: 700,
-                        color: '#F0F0F5',
-                        letterSpacing: '-0.02em',
-                        fontFamily: 'var(--font-display), sans-serif',
-                    }}>Native Bits</span>
-                </motion.a>
-
-                {/* Desktop Nav */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '2px', background: 'rgba(255,255,255,0.02)', padding: '4px', borderRadius: '100px' }} className="hidden md:flex">
-                    {navLinks.map((link) => (
-                        <motion.a
-                            key={link.name}
-                            href={link.href}
-                            style={{
-                                color: '#9CA3AF',
-                                textDecoration: 'none',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                padding: '8px 16px',
-                                borderRadius: '100px',
-                                transition: 'all 0.2s',
-                                position: 'relative'
-                            }}
-                            whileHover={{
-                                color: '#F0F0F5',
-                                background: 'rgba(16, 185, 129, 0.08)'
-                            }}
-                        >
-                            {link.name}
-                        </motion.a>
-                    ))}
-                </div>
-
-                {/* Right Side: GitHub + Sponsor + CTA */}
-                <div style={{ alignItems: 'center', gap: '12px' }} className="hidden md:flex">
-                    <motion.a
-                        href="#"
-                        style={{
-                            color: '#9CA3AF',
-                            padding: '10px',
-                            borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            transition: 'color 0.2s'
-                        }}
-                        whileHover={{ color: '#F0F0F5', background: 'rgba(255,255,255,0.05)' }}
-                    >
-                        <Github size={20} />
-                    </motion.a>
-
-                    <motion.button
-                        style={{
-                            background: 'rgba(245, 158, 11, 0.1)',
-                            color: '#F59E0B',
-                            padding: '10px 20px',
-                            borderRadius: '100px',
-                            fontSize: '13px',
-                            fontWeight: 600,
-                            border: '1px solid rgba(245, 158, 11, 0.2)',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px'
-                        }}
-                        whileHover={{
-                            scale: 1.05,
-                            background: 'rgba(245, 158, 11, 0.15)',
-                            boxShadow: '0 0 20px rgba(245, 158, 11, 0.15)'
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        <Heart size={14} fill="currentColor" />
-                        Sponsor
-                    </motion.button>
-
-                    <motion.button
-                        style={{
-                            background: 'linear-gradient(135deg, #10B981, #06B6D4)',
-                            color: '#FFFFFF',
-                            padding: '10px 20px',
-                            borderRadius: '100px',
-                            fontSize: '13px',
-                            fontWeight: 600,
-                            border: 'none',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px'
-                        }}
-                        whileHover={{
-                            scale: 1.05,
-                            boxShadow: '0 0 30px rgba(16, 185, 129, 0.35)'
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        Get Access
-                        <ArrowUpRight size={14} />
-                    </motion.button>
-                </div>
-
-                {/* Mobile Menu Button */}
-                <motion.button
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        background: isMobileMenuOpen ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
-                        border: 'none',
-                        color: '#F0F0F5',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer'
-                    }}
-                    className="flex md:hidden"
-                    whileTap={{ scale: 0.9 }}
-                >
-                    {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-                </motion.button>
-            </motion.div>
-
-            {/* Mobile Menu Dropdown */}
-            <AnimatePresence>
-                {isMobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                        style={{
-                            position: 'absolute',
-                            top: '80px',
-                            left: '16px',
-                            right: '16px',
-                            padding: '20px',
-                            background: 'rgba(10, 10, 15, 0.95)',
-                            backdropFilter: 'blur(30px)',
-                            border: '1px solid rgba(16, 185, 129, 0.1)',
-                            borderRadius: '24px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '8px',
-                            zIndex: 99,
-                            pointerEvents: 'auto',
-                            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(16, 185, 129, 0.05)'
-                        }}
-                        className="md:hidden"
-                    >
-                        {navLinks.map((link, i) => (
-                            <motion.a
-                                key={link.name}
-                                href={link.href}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: i * 0.05 }}
-                                style={{
-                                    padding: '16px',
-                                    borderRadius: '16px',
-                                    background: 'rgba(16, 185, 129, 0.03)',
-                                    color: '#9CA3AF',
-                                    textDecoration: 'none',
-                                    fontSize: '15px',
-                                    fontWeight: 500,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between'
-                                }}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                                {link.name}
-                                <ArrowUpRight size={14} style={{ opacity: 0.5 }} />
-                            </motion.a>
-                        ))}
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </motion.nav>
-    );
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
 }

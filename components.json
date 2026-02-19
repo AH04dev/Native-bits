@@ -20,6 +20,6 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@react-bits": "https://reactbits.dev/r/{name}.json"
+    "@native-bits": "http://localhost:3000/r/{name}.json"
   }
 }

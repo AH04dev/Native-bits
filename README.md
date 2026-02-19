@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Native Bits
 
-## Getting Started
+Premium component and motion library site built with:
 
-First, run the development server:
+- React
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- shadcn/ui registry format
+
+It exposes a custom shadcn registry so users can install premium blocks directly:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx shadcn@latest add @native-bits/dashboard
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open `http://localhost:3000`.
 
-## Learn More
+## Custom shadcn registry
 
-To learn more about Next.js, take a look at the following resources:
+This project serves registry JSON from:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `GET /registry.json` (full index)
+- `GET /r/registry.json` (full index)
+- `GET /r/{name}.json` (single item)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Example:
 
-## Deploy on Vercel
+- `http://localhost:3000/r/dashboard.json`
+- `http://localhost:3000/r/stripe-pricing.json`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`components.json` is already configured with:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```json
+{
+  "registries": {
+    "@native-bits": "http://localhost:3000/r/{name}.json"
+  }
+}
+```
+
+To publish in production, replace the URL with your deployed domain.
+
+## Registry source files
+
+Installable item source lives in:
+
+- `src/registry/shadcn/blocks/dashboard/*`
+- `src/registry/shadcn/blocks/motion/*`
+- `src/registry/shadcn/blocks/stripe/*`
+
+Registry metadata is defined in:
+
+- `src/lib/shadcn-registry-catalog.ts`
+
+Route handlers:
+
+- `src/app/r/[name]/route.ts`
+- `src/app/registry.json/route.ts`
+
+## Stripe setup (for `stripe-pricing`)
+
+Set these environment variables:
+
+```bash
+STRIPE_SECRET_KEY=sk_live_xxx
+STRIPE_PRICE_MONTHLY=price_monthly_xxx
+STRIPE_PRICE_LIFETIME=price_lifetime_xxx
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+```
+
+The registry block includes an API route file target:
+
+- `app/api/stripe/checkout/route.ts`
+
+## Quality checks
+
+```bash
+npm run lint
+npm run build
+```

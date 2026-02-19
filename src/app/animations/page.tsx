@@ -1,15 +1,13 @@
-'use client';
-
-import { Navbar, Animations, Footer } from '@/components';
+﻿import { Animations, Footer, Navbar } from '@/components';
 
 export default function AnimationsPage() {
-    return (
-        <main>
-            <Navbar />
-            <div style={{ paddingTop: '100px' }}>
-                <Animations />
-            </div>
-            <Footer />
-        </main>
-    );
+  return (
+    <main>
+      <Navbar />
+      <div className="pt-24 md:pt-28">
+        <Animations />
+      </div>
+      <Footer />
+    </main>
+  );
 }

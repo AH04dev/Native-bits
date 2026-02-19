@@ -12,6 +12,13 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Snippet sources served as raw text in docs
+    "src/registry/components/**",
+    "src/registry/animations/**",
+    "src/registry/shadcn/**",
+    // Legacy visual experiments not used by current pages
+    "src/components/ColorBends.tsx",
+    "src/components/Orb.tsx",
   ]),
 ]);
 
