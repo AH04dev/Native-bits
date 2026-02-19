@@ -39,8 +39,8 @@ export default function Footer() {
           <div className="grid gap-8 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
             <div>
               <div className="flex items-center gap-2.5">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-cyan-300/50 bg-cyan-300/20">
-                  <Sparkles size={16} color="#8de2ff" />
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-400/8">
+                  <Sparkles size={16} color="#38bdf8" />
                 </span>
                 <p className="font-display text-lg font-semibold text-white">Native Bits</p>
               </div>
@@ -52,14 +52,14 @@ export default function Footer() {
                 <Link
                   href="https://github.com"
                   target="_blank"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/20 bg-white/5 text-[var(--text-dim)]"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/8 bg-white/4 text-[var(--text-dim)] transition hover:border-white/15 hover:text-[var(--text)]"
                 >
                   <Github size={15} />
                 </Link>
                 <Link
                   href="https://nativebits.dev"
                   target="_blank"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/20 bg-white/5 text-[var(--text-dim)]"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/8 bg-white/4 text-[var(--text-dim)] transition hover:border-white/15 hover:text-[var(--text)]"
                 >
                   <Globe size={15} />
                 </Link>
@@ -92,7 +92,7 @@ export default function Footer() {
             ))}
           </div>
 
-          <div className="mt-8 border-t border-white/10 pt-4 text-xs text-[var(--text-muted)]">
+          <div className="mt-8 border-t border-white/6 pt-4 text-xs text-[var(--text-muted)]">
             <p>Copyright {new Date().getFullYear()} Native Bits. Rebuilt mobile UI experience.</p>
           </div>
         </div>

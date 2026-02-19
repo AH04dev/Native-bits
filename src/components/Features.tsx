@@ -14,31 +14,31 @@ const items = [
     title: 'Smooth interactions',
     text: 'Motion defaults are tuned for touch devices and low-jank transitions.',
     icon: Bolt,
-    color: '#0ea5e9',
+    color: '#818cf8',
   },
   {
     title: 'Gesture-aware',
     text: 'Swipe, drag, and dismiss patterns are included and production-safe.',
     icon: Fingerprint,
-    color: '#60a5fa',
+    color: '#c084fc',
   },
   {
     title: 'High readability',
     text: 'Visual hierarchy and spacing prioritize clarity on small screens.',
     icon: Brush,
-    color: '#93c5fd',
+    color: '#38bdf8',
   },
   {
     title: 'Performance targets',
     text: 'Examples are designed to hold 60fps on modern mobile hardware.',
     icon: Gauge,
-    color: '#38bdf8',
+    color: '#818cf8',
   },
   {
     title: 'Shipping guardrails',
     text: 'Patterns include defaults for status states and accessibility basics.',
     icon: ShieldCheck,
-    color: '#bfdbfe',
+    color: '#c084fc',
   },
 ];
 
@@ -69,13 +69,13 @@ export default function Features() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.38, delay: index * 0.04 }}
-              className="glass rounded-2xl p-4 md:p-5"
+              className="glass rounded-2xl p-4 transition hover:border-white/12 md:p-5"
             >
               <span
-                className="mb-3 inline-flex rounded-xl border p-2"
+                className="mb-3 inline-flex rounded-xl border p-2.5"
                 style={{
-                  borderColor: `${item.color}66`,
-                  background: `${item.color}2A`,
+                  borderColor: `${item.color}30`,
+                  background: `${item.color}12`,
                 }}
               >
                 <item.icon size={16} color={item.color} />

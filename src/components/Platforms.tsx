@@ -28,8 +28,8 @@ export default function Platforms() {
         <div className="grid gap-4 lg:grid-cols-2">
           <article className="glass rounded-3xl p-5 md:p-6">
             <div className="mb-4 flex items-center gap-3">
-              <span className="inline-flex rounded-xl border border-cyan-300/50 bg-cyan-300/20 p-2">
-                <Smartphone size={16} color="#8de2ff" />
+              <span className="inline-flex rounded-xl border border-cyan-400/20 bg-cyan-400/8 p-2.5">
+                <Smartphone size={16} color="#38bdf8" />
               </span>
               <div>
                 <h3 className="font-display text-xl font-semibold text-white">React Native</h3>
@@ -46,7 +46,7 @@ export default function Platforms() {
               ))}
             </div>
 
-            <pre className="code-shell mt-4 overflow-x-auto rounded-2xl p-3 text-xs leading-6 text-slate-200">
+            <pre className="code-shell mt-4 overflow-x-auto rounded-2xl p-3 text-xs leading-6 text-slate-300">
               <code>{`import SegmentedControl from './native-bits/segmented-control';
 
 <SegmentedControl
@@ -59,8 +59,8 @@ export default function Platforms() {
 
           <article className="glass rounded-3xl p-5 md:p-6">
             <div className="mb-4 flex items-center gap-3">
-              <span className="inline-flex rounded-xl border border-sky-300/50 bg-sky-300/20 p-2">
-                <Code2 size={16} color="#dff3ff" />
+              <span className="inline-flex rounded-xl border border-violet-400/20 bg-violet-400/8 p-2.5">
+                <Code2 size={16} color="#818cf8" />
               </span>
               <div>
                 <h3 className="font-display text-xl font-semibold text-white">Flutter</h3>
@@ -71,13 +71,13 @@ export default function Platforms() {
             <div className="space-y-2">
               {flBullets.map((item) => (
                 <p key={item} className="flex items-center gap-2 text-sm text-[var(--text-dim)]">
-                  <CheckCircle2 size={14} color="#60a5fa" />
+                  <CheckCircle2 size={14} color="#818cf8" />
                   {item}
                 </p>
               ))}
             </div>
 
-            <pre className="code-shell mt-4 overflow-x-auto rounded-2xl p-3 text-xs leading-6 text-slate-200">
+            <pre className="code-shell mt-4 overflow-x-auto rounded-2xl p-3 text-xs leading-6 text-slate-300">
               <code>{`import 'package:native_bits/native_bits.dart';
 
 SegmentedControl(

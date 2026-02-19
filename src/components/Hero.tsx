@@ -41,11 +41,7 @@ export default function Hero() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/components"
-                className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold"
-                style={{
-                  color: '#061523',
-                  background: 'linear-gradient(135deg, #38bdf8 0%, #f8fbff 100%)',
-                }}
+                className="btn-solid px-5 py-3 text-sm"
               >
                 Browse Components
                 <ArrowRight size={15} />
@@ -53,7 +49,7 @@ export default function Hero() {
 
               <Link
                 href="/animations"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-[var(--text-primary)] transition hover:border-[var(--border-strong)] hover:bg-white/10"
+                className="btn-outline px-5 py-3 text-sm"
               >
                 Explore Animations
               </Link>
@@ -63,7 +59,7 @@ export default function Hero() {
               {qualityPoints.map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-[var(--text-secondary)]"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/4 px-3 py-1.5 text-xs text-[var(--text-dim)]"
                 >
                   <CheckCircle2 size={13} color="#38bdf8" />
                   {item}
@@ -73,7 +69,7 @@ export default function Hero() {
 
             <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {kpis.map((stat) => (
-                <article key={stat.label} className="glass-panel rounded-2xl p-3">
+                <article key={stat.label} className="rounded-2xl border border-white/6 bg-white/3 p-3 backdrop-blur-sm">
                   <p className="text-sm font-semibold text-[var(--text-primary)]">{stat.value}</p>
                   <p className="mt-0.5 text-xs text-[var(--text-muted)]">{stat.label}</p>
                 </article>
@@ -93,34 +89,34 @@ export default function Hero() {
                   <p className="text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">Preview</p>
                   <p className="font-display text-2xl font-semibold text-white">Mobile Dashboard</p>
                 </div>
-                <span className="rounded-full border border-[rgba(48,213,255,0.35)] bg-[rgba(48,213,255,0.16)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9bf3ff]">
+                <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-emerald-400">
                   Live
                 </span>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+              <div className="rounded-2xl border border-white/6 bg-black/30 p-4">
                 <p className="text-xs uppercase tracking-[0.08em] text-[var(--text-muted)]">Weekly active users</p>
                 <div className="mt-2 flex items-end justify-between">
                   <p className="font-display text-4xl font-semibold text-white">184,320</p>
-                  <p className="text-sm font-semibold text-[#dff3ff]">+12.3%</p>
+                  <p className="text-sm font-semibold text-emerald-400">+12.3%</p>
                 </div>
-                <div className="mt-4 h-2 rounded-full bg-white/10">
+                <div className="mt-4 h-2 rounded-full bg-white/8">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: '72%' }}
                     transition={{ duration: 1.1, delay: 0.2, ease: 'easeOut' }}
                     className="h-2 rounded-full"
-                    style={{ background: 'linear-gradient(90deg, #38bdf8 0%, #f8fbff 100%)' }}
+                    style={{ background: 'linear-gradient(90deg, #38bdf8 0%, #818cf8 100%)' }}
                   />
                 </div>
               </div>
 
               <div className="mt-4 grid grid-cols-2 gap-3">
-                <article className="glass-panel rounded-xl p-3">
+                <article className="rounded-xl border border-white/6 bg-white/3 p-3">
                   <p className="text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)]">Crash free</p>
                   <p className="mt-1 text-xl font-semibold text-white">99.94%</p>
                 </article>
-                <article className="glass-panel rounded-xl p-3">
+                <article className="rounded-xl border border-white/6 bg-white/3 p-3">
                   <p className="text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)]">Frame time</p>
                   <p className="mt-1 text-xl font-semibold text-white">16.2ms</p>
                 </article>

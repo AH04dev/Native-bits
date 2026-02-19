@@ -34,36 +34,35 @@ export default function Navbar() {
         <div
           className="mx-auto flex w-full max-w-6xl items-center justify-between rounded-2xl border px-3 py-2.5 md:px-4"
           style={{
-            borderColor: isScrolled ? 'rgba(56, 189, 248, 0.42)' : 'rgba(56, 189, 248, 0.28)',
-            background: isScrolled ? 'rgba(255, 255, 255, 0.94)' : 'rgba(244, 251, 255, 0.84)',
-            backdropFilter: 'blur(18px)',
+            borderColor: isScrolled ? 'rgba(255, 255, 255, 0.10)' : 'rgba(255, 255, 255, 0.06)',
+            background: isScrolled ? 'rgba(8, 9, 14, 0.85)' : 'rgba(8, 9, 14, 0.60)',
+            backdropFilter: 'blur(20px)',
             boxShadow: isScrolled
-              ? '0 16px 34px rgba(15, 65, 110, 0.2)'
-              : '0 10px 24px rgba(15, 65, 110, 0.14)',
+              ? '0 8px 32px rgba(0, 0, 0, 0.40)'
+              : '0 4px 16px rgba(0, 0, 0, 0.20)',
           }}
         >
           <Link href="/" className="flex items-center gap-2.5">
             <span
               className="flex h-9 w-9 items-center justify-center rounded-xl"
               style={{
-                background:
-                  'linear-gradient(145deg, rgba(48, 213, 255, 0.3), rgba(255, 122, 89, 0.25))',
-                border: '1px solid rgba(48, 213, 255, 0.35)',
+                background: 'linear-gradient(145deg, rgba(56, 189, 248, 0.15), rgba(129, 140, 248, 0.15))',
+                border: '1px solid rgba(56, 189, 248, 0.20)',
               }}
             >
-              <Sparkles size={17} color="#9bf3ff" />
+              <Sparkles size={17} color="#38bdf8" />
             </span>
             <span className="font-display text-base font-semibold text-[var(--text-primary)] md:text-lg">
               Native Bits
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-2 md:flex">
+          <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="rounded-full border border-sky-200/70 bg-white/75 px-3.5 py-1.5 text-sm font-medium text-[var(--text-dim)] transition hover:border-sky-300 hover:text-[var(--text)]"
+                className="rounded-full px-3.5 py-1.5 text-sm font-medium text-[var(--text-dim)] transition hover:bg-white/5 hover:text-[var(--text)]"
               >
                 {item.label}
               </Link>
@@ -73,17 +72,13 @@ export default function Navbar() {
           <div className="hidden items-center gap-2 md:flex">
             <Link
               href="/docs"
-              className="rounded-full border border-sky-200/80 bg-white/80 px-3.5 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-sky-300 hover:bg-white"
+              className="btn-outline px-3.5 py-2 text-sm"
             >
               Install
             </Link>
             <Link
               href="/components"
-              className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold"
-              style={{
-                color: '#061523',
-                background: 'linear-gradient(135deg, #38bdf8 0%, #f8fbff 100%)',
-              }}
+              className="btn-solid px-3.5 py-2 text-sm"
             >
               Explore
               <ArrowUpRight size={14} />
@@ -94,7 +89,7 @@ export default function Navbar() {
             type="button"
             aria-label="Toggle menu"
             onClick={() => setMenuOpen((prev) => !prev)}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/20 bg-white/5 text-[var(--text-primary)] md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[var(--text-primary)] md:hidden"
           >
             {menuOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
@@ -110,19 +105,19 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             className="fixed left-3 right-3 top-[78px] z-40 rounded-2xl border p-3 md:hidden"
             style={{
-              background: 'rgba(255, 255, 255, 0.95)',
-              borderColor: 'rgba(56, 189, 248, 0.32)',
-              backdropFilter: 'blur(18px)',
-              boxShadow: '0 18px 42px rgba(15, 65, 110, 0.2)',
+              background: 'rgba(11, 13, 20, 0.95)',
+              borderColor: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(20px)',
+              boxShadow: '0 16px 48px rgba(0, 0, 0, 0.50)',
             }}
           >
-            <nav className="flex flex-col gap-1.5">
+            <nav className="flex flex-col gap-1">
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className="rounded-xl border border-sky-200/70 bg-white/80 px-3 py-2.5 text-sm font-medium text-[var(--text-dim)] transition hover:text-[var(--text)]"
+                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-[var(--text-dim)] transition hover:bg-white/5 hover:text-[var(--text)]"
                 >
                   {item.label}
                 </Link>

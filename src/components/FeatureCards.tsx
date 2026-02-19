@@ -17,14 +17,14 @@ const cards = [
     body: 'Touch-friendly transitions, list staggering, counters, and gesture-driven effects.',
     href: '/animations',
     icon: WandSparkles,
-    color: '#60a5fa',
+    color: '#818cf8',
   },
   {
     title: 'Documentation',
     body: 'Install commands, props tables, and direct source snippets for each item.',
     href: '/docs',
     icon: BookOpen,
-    color: '#93c5fd',
+    color: '#c084fc',
   },
 ];
 
@@ -59,18 +59,18 @@ export default function FeatureCards() {
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.4, delay: index * 0.06 }}
             >
-              <Link href={card.href} className="glass block h-full rounded-3xl p-5 transition hover:-translate-y-1">
+              <Link href={card.href} className="glass group block h-full rounded-3xl p-5 transition hover:border-white/12">
                 <div className="mb-4 flex items-center justify-between">
                   <span
-                    className="inline-flex rounded-xl border p-2"
+                    className="inline-flex rounded-xl border p-2.5"
                     style={{
-                      borderColor: `${card.color}66`,
-                      background: `${card.color}2A`,
+                      borderColor: `${card.color}30`,
+                      background: `${card.color}12`,
                     }}
                   >
-                    <card.icon size={17} color={card.color} />
+                    <card.icon size={18} color={card.color} />
                   </span>
-                  <ArrowUpRight size={15} color={card.color} />
+                  <ArrowUpRight size={15} className="text-[var(--text-muted)] transition group-hover:text-[var(--text)]" />
                 </div>
                 <h3 className="font-display text-2xl font-semibold text-white">{card.title}</h3>
                 <p className="mt-2 text-sm leading-7 text-[var(--text-dim)]">{card.body}</p>

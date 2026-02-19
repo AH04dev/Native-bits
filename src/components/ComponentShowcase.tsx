@@ -14,7 +14,7 @@ function Preview({ slug, palette }: { slug: string; palette: [string, string] })
       return (
         <button
           className="rounded-xl px-5 py-2.5 text-sm font-semibold"
-          style={{ background: gradient, color: '#04111f' }}
+          style={{ background: gradient, color: '#08090E' }}
         >
           Continue
         </button>
@@ -23,7 +23,7 @@ function Preview({ slug, palette }: { slug: string; palette: [string, string] })
       return (
         <div className="relative h-16 w-16">
           <svg width="64" height="64" className="-rotate-90">
-            <circle cx="32" cy="32" r="24" stroke="rgba(255,255,255,0.2)" strokeWidth="6" fill="none" />
+            <circle cx="32" cy="32" r="24" stroke="rgba(255,255,255,0.1)" strokeWidth="6" fill="none" />
             <circle
               cx="32"
               cy="32"
@@ -94,17 +94,16 @@ export default function ComponentShowcase({ previewOnly = false }: { previewOnly
 
           {!previewOnly && (
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-1 rounded-full border border-white/20 bg-white/5 p-1">
+              <div className="flex items-center gap-1 rounded-full border border-white/8 bg-white/4 p-1">
                 {(['react-native', 'flutter'] as Platform[]).map((option) => (
                   <button
                     key={option}
                     type="button"
                     onClick={() => setPlatform(option)}
-                    className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] ${
-                      platform === option
-                        ? 'bg-[linear-gradient(135deg,#38bdf8_0%,#f8fbff_100%)] text-[#031321]'
-                        : 'text-[var(--text-dim)]'
-                    }`}
+                    className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] transition ${platform === option
+                        ? 'bg-[linear-gradient(135deg,#38bdf8_0%,#818cf8_100%)] text-[#08090E]'
+                        : 'text-[var(--text-dim)] hover:text-[var(--text)]'
+                      }`}
                   >
                     {option === 'react-native' ? 'React Native' : 'Flutter'}
                   </button>
@@ -117,11 +116,10 @@ export default function ComponentShowcase({ previewOnly = false }: { previewOnly
                     key={category}
                     type="button"
                     onClick={() => setSelectedCategory(category)}
-                    className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] ${
-                      selectedCategory === category
-                        ? 'border-cyan-300/70 bg-cyan-300/20 text-cyan-100'
-                        : 'border-white/20 bg-white/5 text-[var(--text-muted)]'
-                    }`}
+                    className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] transition ${selectedCategory === category
+                        ? 'border-cyan-400/30 bg-cyan-400/10 text-cyan-300'
+                        : 'border-white/8 bg-white/4 text-[var(--text-muted)] hover:text-[var(--text-dim)]'
+                      }`}
                   >
                     {category}
                   </button>
@@ -145,7 +143,7 @@ export default function ComponentShowcase({ previewOnly = false }: { previewOnly
                   transition={{ duration: 0.38, delay: index * 0.03 }}
                   className="glass overflow-hidden rounded-3xl"
                 >
-                  <div className="flex min-h-[150px] items-center justify-center border-b border-white/10 bg-slate-950/35 p-4">
+                  <div className="flex min-h-[150px] items-center justify-center border-b border-white/6 bg-white/2 p-4">
                     <Preview slug={item.slug} palette={item.palette} />
                   </div>
 
@@ -157,7 +155,7 @@ export default function ComponentShowcase({ previewOnly = false }: { previewOnly
                       </div>
                       <Link
                         href={`/docs/components/${item.slug}`}
-                        className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-dim)]"
+                        className="inline-flex items-center gap-1 rounded-full border border-white/8 bg-white/4 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-dim)] transition hover:border-white/15 hover:text-[var(--text)]"
                       >
                         Docs
                         <ExternalLink size={11} />
@@ -179,7 +177,7 @@ export default function ComponentShowcase({ previewOnly = false }: { previewOnly
                         <button
                           type="button"
                           onClick={() => setExpandedSlug(expanded ? null : item.slug)}
-                          className="mt-4 inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--text-dim)]"
+                          className="mt-4 inline-flex items-center gap-1 rounded-full border border-white/8 bg-white/4 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--text-dim)] transition hover:border-white/15"
                         >
                           {expanded ? 'Hide code' : 'Show code'}
                           <motion.span animate={{ rotate: expanded ? 180 : 0 }}>
@@ -204,14 +202,14 @@ export default function ComponentShowcase({ previewOnly = false }: { previewOnly
                                   <button
                                     type="button"
                                     onClick={() => copySnippet(item.slug, item.code[platform])}
-                                    className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--text-dim)]"
+                                    className="inline-flex items-center gap-1 rounded-full border border-white/8 bg-white/4 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--text-dim)] transition hover:border-white/15"
                                   >
                                     {copiedSlug === item.slug ? <Check size={11} /> : <Copy size={11} />}
                                     {copiedSlug === item.slug ? 'Copied' : 'Copy'}
                                   </button>
                                 </div>
 
-                                <pre className="max-h-48 overflow-auto text-xs leading-6 text-slate-200">
+                                <pre className="max-h-48 overflow-auto text-xs leading-6 text-slate-300">
                                   <code>{item.code[platform]}</code>
                                 </pre>
                               </div>
@@ -230,4 +228,3 @@ export default function ComponentShowcase({ previewOnly = false }: { previewOnly
     </section>
   );
 }
-

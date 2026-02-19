@@ -58,7 +58,7 @@ export default function CTA() {
               Product updates
             </label>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <div className="glass flex flex-1 items-center gap-2 rounded-full px-4 py-2">
+              <div className="flex flex-1 items-center gap-2 rounded-full border border-white/8 bg-white/4 px-4 py-2">
                 <Mail size={14} color="#38bdf8" />
                 <input
                   id="cta-email"
