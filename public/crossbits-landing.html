@@ -614,18 +614,21 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative
+      position: relative;
+      gap: 32px;
+      margin-top: 40px;
+      perspective: 1400px;
     }
 
     .ph-glow {
       position: absolute;
-      width: 280px;
-      height: 280px;
+      width: 400px;
+      height: 400px;
       border-radius: 50%;
-      filter: blur(80px);
-      opacity: .18;
+      filter: blur(100px);
+      opacity: .2;
       background: radial-gradient(circle, var(--a), var(--b));
-      animation: pglow 3s ease-in-out infinite
+      animation: pglow 4s ease-in-out infinite
     }
 
     @keyframes pglow {
@@ -636,7 +639,7 @@
       }
 
       50% {
-        transform: scale(1.2)
+        transform: scale(1.1)
       }
     }
 
@@ -644,11 +647,88 @@
       width: 230px;
       background: #10101c;
       border-radius: 44px;
-      border: 1.5px solid rgba(255, 255, 255, .09);
+      border: 1.5px solid rgba(255, 255, 255, .06);
       overflow: hidden;
       position: relative;
       z-index: 2;
-      box-shadow: 0 40px 80px rgba(0, 0, 0, .7), inset 0 0 0 .5px rgba(255, 255, 255, .05)
+      box-shadow: 0 30px 60px rgba(0, 0, 0, .5), inset 0 0 0 .5px rgba(255, 255, 255, .05);
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s;
+    }
+
+    .mockup-web {
+      width: 280px;
+      height: 480px;
+      background: #10101c;
+      border-radius: 12px;
+      border: 1.5px solid rgba(255, 255, 255, .06);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      transform: rotateY(18deg) translateZ(-80px) translateX(20px);
+      box-shadow: -20px 30px 60px rgba(0, 0, 0, .4);
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s;
+    }
+
+    .mockup-web:hover {
+      transform: rotateY(0deg) translateZ(20px) translateX(0);
+      z-index: 10;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, .6);
+    }
+
+    .mw-header {
+      height: 24px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 5px;
+    }
+
+    .mw-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      opacity: 0.5
+    }
+
+    .mockup-android {
+      z-index: 3;
+      transform: translateZ(40px) translateY(-10px);
+      box-shadow: 0 50px 100px rgba(0, 0, 0, .8), inset 0 0 0 .5px rgba(255, 255, 255, .15);
+      border-color: rgba(255, 255, 255, .1);
+    }
+
+    .mockup-android:hover {
+      transform: translateZ(60px) translateY(-15px);
+    }
+
+    .mockup-android .ph-notch {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      top: 12px;
+      background: #000;
+    }
+
+    .mockup-ios {
+      z-index: 1;
+      transform: rotateY(-18deg) translateZ(-80px) translateX(-20px);
+      box-shadow: 20px 30px 60px rgba(0, 0, 0, .4);
+    }
+
+    .mockup-ios:hover {
+      transform: rotateY(0deg) translateZ(20px) translateX(0);
+      z-index: 10;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, .6);
+    }
+
+    .mockup-ios .ph-notch {
+      width: 90px;
+      height: 26px;
+      border-radius: 14px;
+      top: 8px;
+      background: #000;
     }
 
     .ph-notch {
@@ -1660,14 +1740,54 @@
           </div>
           <div class="ph-wrap rv d1">
             <div class="ph-glow"></div>
-            <div class="phone">
+
+            <!-- WEB MOCKUP -->
+            <div class="mockup-web">
+              <div class="mw-header">
+                <div class="mw-dot" style="background:#ff5f56"></div>
+                <div class="mw-dot" style="background:#ffbd2e"></div>
+                <div class="mw-dot" style="background:#27c93f"></div>
+              </div>
+              <div class="ph-screen"
+                style="padding: 30px 20px; min-height: 400px; transform: scale(0.95); transform-origin: top center">
+                <div
+                  style="font-size:9px;color:rgba(255,255,255,.2);font-weight:700;letter-spacing:1.5px;margin-bottom:2px">
+                  BUTTONS (WEB)</div>
+                <div class="ph-btn" style="background:linear-gradient(135deg,#5533ff,#ff33aa);color:#fff">Get Started
+                </div>
+                <div class="ph-btn"
+                  style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.07)">
+                  Learn More</div>
+                <div style="height:12px"></div>
+                <div
+                  style="font-size:9px;color:rgba(255,255,255,.2);font-weight:700;letter-spacing:1.5px;margin-bottom:4px">
+                  SWITCHES</div>
+                <div class="ph-sw-row"><span class="ph-sw-l">Notifications</span>
+                  <div class="ph-sw on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div>
+                </div>
+                <div class="ph-sw-row"><span class="ph-sw-l">Dark Mode</span>
+                  <div class="ph-sw on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div>
+                </div>
+                <div style="height:12px"></div>
+                <div class="ph-card">
+                  <div class="ph-ct">Pro Plan</div>
+                  <div class="ph-cs">12 components</div>
+                  <div class="ph-pt">
+                    <div class="ph-pf" style="background:linear-gradient(90deg,#5533ff,#ff33aa);width:78%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ANDROID MOCKUP -->
+            <div class="phone mockup-android">
               <div class="ph-notch"></div>
-              <div class="ph-screen">
+              <div class="ph-screen" style="padding-top: 50px;">
                 <div
                   style="font-size:9px;color:rgba(255,255,255,.2);font-weight:700;letter-spacing:1.5px;margin-bottom:2px">
                   BUTTONS</div>
-                <div class="ph-btn" style="background:linear-gradient(135deg,#5533ff,#ff33aa);color:#fff">Get
-                  Started</div>
+                <div class="ph-btn" style="background:linear-gradient(135deg,#5533ff,#ff33aa);color:#fff">Get Started
+                </div>
                 <div class="ph-btn"
                   style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.07)">
                   Learn More</div>
@@ -1694,6 +1814,42 @@
                   <div style="display:flex;gap:5px;margin-top:8px">
                     <div class="ph-badge" style="background:rgba(85,51,255,.15);color:#a088ff">Active</div>
                     <div class="ph-badge" style="background:rgba(51,255,170,.1);color:#33ffaa">v1.0</div>
+                  </div>
+                  <div class="ph-pt">
+                    <div class="ph-pf" style="background:linear-gradient(90deg,#5533ff,#ff33aa);width:78%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- IOS MOCKUP -->
+            <div class="phone mockup-ios">
+              <div class="ph-notch"></div>
+              <div class="ph-screen" style="padding-top: 50px;">
+                <div
+                  style="font-size:9px;color:rgba(255,255,255,.2);font-weight:700;letter-spacing:1.5px;margin-bottom:2px">
+                  BUTTONS</div>
+                <div class="ph-btn" style="background:linear-gradient(135deg,#5533ff,#ff33aa);color:#fff">Get Started
+                </div>
+                <div class="ph-btn"
+                  style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.07)">
+                  Learn More</div>
+                <div style="height:12px"></div>
+                <div
+                  style="font-size:9px;color:rgba(255,255,255,.2);font-weight:700;letter-spacing:1.5px;margin-bottom:4px">
+                  SWITCHES</div>
+                <div class="ph-sw-row"><span class="ph-sw-l">Notifications</span>
+                  <div class="ph-sw on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div>
+                </div>
+                <div class="ph-sw-row"><span class="ph-sw-l">Dark Mode</span>
+                  <div class="ph-sw on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div>
+                </div>
+                <div style="height:12px"></div>
+                <div class="ph-card">
+                  <div class="ph-ct">Pro Plan</div>
+                  <div class="ph-cs">All 12 components</div>
+                  <div style="display:flex;gap:5px;margin-top:8px">
+                    <div class="ph-badge" style="background:rgba(85,51,255,.15);color:#a088ff">Active</div>
                   </div>
                   <div class="ph-pt">
                     <div class="ph-pf" style="background:linear-gradient(90deg,#5533ff,#ff33aa);width:78%"></div>
