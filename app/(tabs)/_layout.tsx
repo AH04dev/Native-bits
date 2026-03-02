@@ -7,6 +7,7 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
+          display: 'none',
           backgroundColor: 'hsl(230, 25%, 7%)',
           borderTopColor: 'hsl(230, 20%, 14%)',
           borderTopWidth: 1,
