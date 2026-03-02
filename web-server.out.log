@@ -1,0 +1,27 @@
+
+> crossbits@1.0.0 web
+> expo start --web --port 8081 --non-interactive
+
+
+React Native / Expo is supported as a PRO feature of [33mConsole Ninja[39m [36mhttps://console-ninja.com/pro[39m.
+
+Starting project at C:\Users\DELL\OneDrive\Desktop\majors\CrossBits\crossbits
+Starting Metro Bundler
+
+Waiting on http://localhost:8081
+Logs for your project will appear below.
+Web node_modules\expo-router\entry.js ▓▓▓▓░░░░░░░░░░░░ 26.4% (113/285)
+λ node_modules\@expo\router-server\node\render.js ▓▓▓▓░░░░░░░░░░░░ 30.1% (112/226)
+Web node_modules\expo-router\entry.js ▓▓▓▓▓▓▓▓▓▓▓░░░░░ 73.5% (608/709)
+λ node_modules\@expo\router-server\node\render.js ▓▓▓▓▓▓▓▓░░░░░░░░ 55.6% (487/653)
+Web node_modules\expo-router\entry.js ▓▓▓▓▓▓▓▓▓▓▓▓░░░░ 80.8% ( 687/2453)
+λ node_modules\@expo\router-server\node\render.js ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░ 81.7% (2253/2493)
+λ Bundled 10667ms node_modules\@expo\router-server\node\render.js (2704 modules)
+Web Bundled 12180ms node_modules\expo-router\entry.js (2671 modules)
+Web node_modules\expo-router\entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░ 99.9% (2671/2671)
+Web node_modules\expo-router\entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+λ Bundled 111ms node_modules\@expo\router-server\node\render.js (1 module)
+Web Bundled 653ms node_modules\expo-router\entry.js (1 module)
+Web node_modules\expo-router\entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+λ Bundled 210ms node_modules\@expo\router-server\node\render.js (1 module)
+Web Bundled 763ms node_modules\expo-router\entry.js (1 module)
