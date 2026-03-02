@@ -41,34 +41,10 @@
       font-family: 'Inter', sans-serif;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
-      cursor: none;
       min-height: 100vh
     }
 
-    /* CURSOR */
-    #cur {
-      position: fixed;
-      z-index: 9999;
-      pointer-events: none;
-      border: 1.5px solid rgba(255, 255, 255, 0.4);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      width: 32px;
-      height: 32px;
-      transition: width .25s, height .25s, border-color .25s, background-color .25s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #cur::after {
-      content: '';
-      width: 5px;
-      height: 5px;
-      background: #fff;
-      border-radius: 50%;
-      transition: transform .25s, opacity .25s;
-    }
+    /* CURSOR BLOG/EFFECTS */
 
     #cur-blob {
       position: fixed;
@@ -81,19 +57,6 @@
       opacity: .08;
       background: radial-gradient(circle, var(--a), var(--b));
       transition: none
-    }
-
-    body.h-cur #cur {
-      width: 48px;
-      height: 48px;
-      border-color: rgba(255, 255, 255, 0.1);
-      background-color: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(4px);
-    }
-
-    body.h-cur #cur::after {
-      transform: scale(0);
-      opacity: 0;
     }
 
     /* WEBGL */
@@ -123,9 +86,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(3, 3, 12, 0.45);
+      background: rgba(3, 3, 12, 0.05);
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, .02)
+      border-bottom: 1px solid rgba(255, 255, 255, .01)
     }
 
     .n-logo {
@@ -133,7 +96,6 @@
       align-items: center;
       gap: 10px;
       text-decoration: none;
-      cursor: none
     }
 
     .n-hex {
@@ -163,7 +125,6 @@
       font-size: 12px;
       font-weight: 500;
       color: rgba(255, 255, 255, .35);
-      cursor: none;
       transition: all .2s
     }
 
@@ -183,7 +144,6 @@
       border-radius: 10px;
       font-size: 12px;
       font-weight: 700;
-      cursor: none;
       border: none;
       font-family: inherit;
       transition: all .2s
@@ -1543,7 +1503,6 @@
       text-decoration: none;
       margin-bottom: 10px;
       transition: color .15s;
-      cursor: none
     }
 
     .ftc a:hover {
@@ -1657,7 +1616,6 @@
 
 <body>
 
-  <div id="cur"></div>
   <div id="cur-blob"></div>
   <canvas id="gl"></canvas>
   <div class="scanline"></div>
@@ -2352,15 +2310,19 @@ void main(){
     (function rgl(ts) { gl.uniform1f(uT, ts * .001); gl.uniform2f(uR, GW, GH); gl.uniform2f(uM, gmx, gmy); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); requestAnimationFrame(rgl) })(0);
 
     /* ══ CURSOR ══ */
-    const cur = document.getElementById('cur'), blob = document.getElementById('cur-blob');
+    const blob = document.getElementById('cur-blob');
     let cx = 0, cy = 0, bx = 0, by = 0;
+    blob.style.left = '0px'; blob.style.top = '0px';
     document.addEventListener('mousemove', e => {
       cx = e.clientX; cy = e.clientY;
-      cur.style.left = cx + 'px'; cur.style.top = cy + 'px';
       const el = document.elementFromPoint(cx, cy);
       document.body.classList.toggle('h-cur', !!(el && (el.tagName === 'BUTTON' || el.classList.contains('orb-btn') || el.classList.contains('ncta') || el.classList.contains('bc'))));
     });
-    (function lb() { bx += (cx - bx) * .05; by += (cy - by) * .05; blob.style.left = (bx - 200) + 'px'; blob.style.top = (by - 200) + 'px'; requestAnimationFrame(lb) })();
+    (function lb() {
+      bx += (cx - bx) * .05; by += (cy - by) * .05;
+      blob.style.transform = `translate(calc(${bx}px - 200px), calc(${by}px - 200px))`;
+      requestAnimationFrame(lb)
+    })();
 
     /* ══ CHAR ANIMATION ══ */
     function splitAnim(el, text, base) {
