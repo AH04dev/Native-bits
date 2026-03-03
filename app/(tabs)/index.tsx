@@ -12,6 +12,9 @@ import {
   Tag,
   UserCircle,
   Search,
+  ChevronDown,
+  SlidersHorizontal,
+  Minus,
 } from 'lucide-react-native';
 
 type ComponentItem = {
@@ -87,6 +90,30 @@ const COMPONENTS: ComponentItem[] = [
     icon: MessageSquare,
     category: 'Overlays',
     accent: '#EC4899',
+  },
+  {
+    title: 'Select',
+    href: '/select',
+    description: 'Native dropdown picker',
+    icon: ChevronDown,
+    category: 'Inputs',
+    accent: '#3B82F6',
+  },
+  {
+    title: 'Slider',
+    href: '/slider',
+    description: 'Touch-friendly range input',
+    icon: SlidersHorizontal,
+    category: 'Inputs',
+    accent: '#3B82F6',
+  },
+  {
+    title: 'Separator',
+    href: '/separator',
+    description: 'Horizontal and vertical divider',
+    icon: Minus,
+    category: 'Display',
+    accent: '#8B5CF6',
   },
 ];
 

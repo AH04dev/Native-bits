@@ -8,3 +8,6 @@ export * from './Progress';
 export * from './Badge';
 export * from './Separator';
 export * from './Avatar';
+export * from './Select';
+export * from './Slider';
+export * from './ActivityIndicator';
